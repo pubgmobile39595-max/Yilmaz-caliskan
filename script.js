@@ -1,4 +1,15 @@
+/* =========================================================
+   YILMAZ ÇALIŞKAN TURİZM
+   MAIN JAVASCRIPT
+========================================================= */
+
+
+/* =========================================================
+   OTELLER
+========================================================= */
+
 const hotels = [
+
   {
     id: 1,
     name: "Azure Coast Resort",
@@ -8,8 +19,9 @@ const hotels = [
     reviews: 418,
     price: 4850,
     desc: "Denize yakın, modern odalar ve geniş havuz alanı.",
-    image: "https://images.unsplash.com/photo-1564501049412-61c2a3083791?auto=format&fit=crop&w=1000&q=85"
+    image: "https://images.unsplash.com/photo-1564501049412-61c2a3083791?auto=format&fit=crop&w=1200&q=85"
   },
+
   {
     id: 2,
     name: "Bodrum Marina Hotel",
@@ -19,8 +31,9 @@ const hotels = [
     reviews: 263,
     price: 6250,
     desc: "Marina manzarası, merkezi konum ve seçkin restoran.",
-    image: "https://images.unsplash.com/photo-1601918774946-25832a4be0d6?auto=format&fit=crop&w=1000&q=85"
+    image: "https://images.unsplash.com/photo-1601918774946-25832a4be0d6?auto=format&fit=crop&w=1200&q=85"
   },
+
   {
     id: 3,
     name: "Alaçatı Stone House",
@@ -30,8 +43,9 @@ const hotels = [
     reviews: 192,
     price: 3950,
     desc: "Taş mimari, sakin avlu ve Alaçatı atmosferi.",
-    image: "https://images.unsplash.com/photo-1584132967334-10e028bd69f7?auto=format&fit=crop&w=1000&q=85"
+    image: "https://images.unsplash.com/photo-1584132967334-10e028bd69f7?auto=format&fit=crop&w=1200&q=85"
   },
+
   {
     id: 4,
     name: "Cappadocia Valley Cave",
@@ -41,8 +55,9 @@ const hotels = [
     reviews: 331,
     price: 5400,
     desc: "Vadiler arasında benzersiz mağara oda deneyimi.",
-    image: "https://images.unsplash.com/photo-1573053986275-840ffc7cc685?auto=format&fit=crop&w=1000&q=85"
+    image: "https://images.unsplash.com/photo-1573053986275-840ffc7cc685?auto=format&fit=crop&w=1200&q=85"
   },
+
   {
     id: 5,
     name: "Mediterranean Palace",
@@ -52,8 +67,9 @@ const hotels = [
     reviews: 510,
     price: 7200,
     desc: "Geniş tesis, özel plaj ve aile dostu olanaklar.",
-    image: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1000&q=85"
+    image: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1200&q=85"
   },
+
   {
     id: 6,
     name: "Bodrum Blue Suites",
@@ -63,8 +79,9 @@ const hotels = [
     reviews: 174,
     price: 8150,
     desc: "Sade lüks, Ege manzarası ve özel süitler.",
-    image: "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?auto=format&fit=crop&w=1000&q=85"
+    image: "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?auto=format&fit=crop&w=1200&q=85"
   },
+
   {
     id: 7,
     name: "Istanbul Bosphorus Stay",
@@ -74,8 +91,9 @@ const hotels = [
     reviews: 642,
     price: 4600,
     desc: "Boğaz hattında şehir kaçamağı için modern konaklama.",
-    image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1000&q=85"
+    image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=85"
   },
+
   {
     id: 8,
     name: "Çeşme Seaside Club",
@@ -85,14 +103,31 @@ const hotels = [
     reviews: 229,
     price: 5750,
     desc: "Plaja yakın konum ve Ege yazı için rahat odalar.",
-    image: "https://images.unsplash.com/photo-1540541338287-41700207dee6?auto=format&fit=crop&w=1000&q=85"
+    image: "https://images.unsplash.com/photo-1540541338287-41700207dee6?auto=format&fit=crop&w=1200&q=85"
   }
+
 ];
 
 
-/* =========================
-   TEMEL DEĞİŞKENLER
-========================= */
+/* =========================================================
+   AYARLAR
+========================================================= */
+
+/*
+  BURAYA GERÇEK WHATSAPP NUMARASINI DAHA SONRA YAZACAĞIZ.
+
+  Örnek:
+  905321234567
+
+  + işareti kullanma.
+*/
+
+const WHATSAPP_NUMBER = "";
+
+
+/* =========================================================
+   GLOBAL
+========================================================= */
 
 let favorites = JSON.parse(
   localStorage.getItem("yc_favorites") || "[]"
@@ -100,31 +135,41 @@ let favorites = JSON.parse(
 
 let currentHotels = [...hotels];
 
-const $ = selector => document.querySelector(selector);
 
-const $$ = selector => [
-  ...document.querySelectorAll(selector)
-];
+/* =========================================================
+   KISA DOM FONKSİYONLARI
+========================================================= */
+
+const $ = selector =>
+  document.querySelector(selector);
 
 
-/* =========================
-   PARA FORMATLAMA
-========================= */
+const $$ = selector =>
+  [...document.querySelectorAll(selector)];
+
+
+/* =========================================================
+   PARA
+========================================================= */
 
 function money(value) {
 
   return new Intl.NumberFormat("tr-TR", {
+
     style: "currency",
+
     currency: "TRY",
+
     maximumFractionDigits: 0
+
   }).format(value);
 
 }
 
 
-/* =========================
-   BİLDİRİM
-========================= */
+/* =========================================================
+   TOAST
+========================================================= */
 
 function toast(message) {
 
@@ -147,13 +192,17 @@ function toast(message) {
 }
 
 
-/* =========================
+/* =========================================================
    FAVORİLER
-========================= */
+========================================================= */
 
 function updateFavoriteCount() {
 
-  $("#favoriteCount").textContent =
+  const element = $("#favoriteCount");
+
+  if (!element) return;
+
+  element.textContent =
     favorites.length;
 
 }
@@ -182,17 +231,22 @@ function toggleFavorite(id) {
 
   if (isFavorite(id)) {
 
-    favorites = favorites.filter(
-      item => item !== id
-    );
+    favorites =
+      favorites.filter(
+        item => item !== id
+      );
 
-    toast("Otel favorilerden çıkarıldı.");
+    toast(
+      "Otel favorilerden çıkarıldı."
+    );
 
   } else {
 
     favorites.push(id);
 
-    toast("Otel favorilere eklendi.");
+    toast(
+      "Otel favorilere eklendi."
+    );
 
   }
 
@@ -203,13 +257,13 @@ function toggleFavorite(id) {
 }
 
 
-/* =========================
-   OTELLERİ OLUŞTUR
-========================= */
+/* =========================================================
+   OTEL LİSTESİ
+========================================================= */
 
 function renderHotels(list = hotels) {
 
-  currentHotels = list;
+  currentHotels = [...list];
 
   const grid = $("#hotelGrid");
 
@@ -219,25 +273,32 @@ function renderHotels(list = hotels) {
 
   grid.innerHTML = "";
 
-  empty.hidden = list.length !== 0;
+  empty.hidden =
+    list.length !== 0;
 
 
   list.forEach(hotel => {
 
-    const card = document.createElement("article");
+    const card =
+      document.createElement("article");
 
-    card.className = "hotel-card";
+    card.className =
+      "hotel-card";
+
 
     card.innerHTML = `
 
       <div
         class="hotel-image"
-        style="background-image:url('${hotel.image}')">
+        style="
+          background-image:url('${hotel.image}')
+        ">
 
         <button
           class="favorite ${isFavorite(hotel.id) ? "active" : ""}"
           data-favorite="${hotel.id}"
-          aria-label="Favorilere ekle">
+          aria-label="Favorilere ekle"
+          type="button">
 
           ${isFavorite(hotel.id) ? "♥" : "♡"}
 
@@ -293,7 +354,8 @@ function renderHotels(list = hotels) {
 
             <button
               class="small-button"
-              data-detail="${hotel.id}">
+              data-detail="${hotel.id}"
+              type="button">
 
               Detay
 
@@ -302,7 +364,8 @@ function renderHotels(list = hotels) {
 
             <button
               class="small-button primary"
-              data-book="${hotel.id}">
+              data-book="${hotel.id}"
+              type="button">
 
               Rezervasyon
 
@@ -322,85 +385,134 @@ function renderHotels(list = hotels) {
   });
 
 
-  /* FAVORİ BUTONLARI */
+  /* FAVORİ */
 
-  $$("[data-favorite]").forEach(button => {
+  $$("[data-favorite]")
+    .forEach(button => {
 
-    button.addEventListener("click", () => {
+      button.addEventListener(
+        "click",
+        () => {
 
-      toggleFavorite(
-        Number(button.dataset.favorite)
+          toggleFavorite(
+            Number(
+              button.dataset.favorite
+            )
+          );
+
+        }
       );
 
     });
 
-  });
 
+  /* DETAY */
 
-  /* DETAY BUTONLARI */
+  $$("[data-detail]")
+    .forEach(button => {
 
-  $$("[data-detail]").forEach(button => {
+      button.addEventListener(
+        "click",
+        () => {
 
-    button.addEventListener("click", () => {
+          openHotel(
+            Number(
+              button.dataset.detail
+            )
+          );
 
-      openHotel(
-        Number(button.dataset.detail)
+        }
       );
 
     });
 
-  });
 
+  /* REZERVASYON */
 
-  /* REZERVASYON BUTONLARI */
+  $$("[data-book]")
+    .forEach(button => {
 
-  $$("[data-book]").forEach(button => {
+      button.addEventListener(
+        "click",
+        () => {
 
-    button.addEventListener("click", () => {
+          openBooking(
+            Number(
+              button.dataset.book
+            )
+          );
 
-      openBooking(
-        Number(button.dataset.book)
+        }
       );
 
     });
-
-  });
 
 }
 
 
-/* =========================
+/* =========================================================
    MODAL
-========================= */
+========================================================= */
 
 function openModal(content) {
 
-  $("#modalContent").innerHTML = content;
+  const modal =
+    $("#modal");
 
-  $("#modal").classList.add("active");
+  const modalContent =
+    $("#modalContent");
 
-  document.body.style.overflow = "hidden";
+  if (!modal || !modalContent)
+    return;
+
+  modalContent.innerHTML =
+    content;
+
+  modal.classList.add("active");
+
+  modal.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
+  document.body.style.overflow =
+    "hidden";
 
 }
 
 
 function closeModal() {
 
-  $("#modal").classList.remove("active");
+  const modal =
+    $("#modal");
 
-  document.body.style.overflow = "";
+  if (!modal) return;
+
+  modal.classList.remove(
+    "active"
+  );
+
+  modal.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+  document.body.style.overflow =
+    "";
 
 }
 
 
-/* =========================
+/* =========================================================
    OTEL DETAY
-========================= */
+========================================================= */
 
 function openHotel(id) {
 
   const hotel =
-    hotels.find(item => item.id === id);
+    hotels.find(
+      item => item.id === id
+    );
 
   if (!hotel) return;
 
@@ -410,8 +522,9 @@ function openHotel(id) {
     <div
       style="
         height:220px;
-        border-radius:12px;
-        background:url('${hotel.image}') center/cover;
+        border-radius:14px;
+        background:url('${hotel.image}')
+        center/cover;
         margin-bottom:20px;
       ">
     </div>
@@ -453,7 +566,8 @@ function openHotel(id) {
 
     <button
       class="main-button"
-      id="modalBookingButton">
+      id="modalBookingButton"
+      type="button">
 
       Bu oteli rezerve et
 
@@ -462,23 +576,109 @@ function openHotel(id) {
   `);
 
 
-  $("#modalBookingButton")
-    .addEventListener(
+  const bookingButton =
+    $("#modalBookingButton");
+
+  if (bookingButton) {
+
+    bookingButton.addEventListener(
       "click",
       () => openBooking(id)
     );
 
+  }
+
 }
 
 
-/* =========================
+/* =========================================================
+   TARİH FORMAT
+========================================================= */
+
+function isoDate(date) {
+
+  const year =
+    date.getFullYear();
+
+  const month =
+    String(
+      date.getMonth() + 1
+    ).padStart(2, "0");
+
+  const day =
+    String(
+      date.getDate()
+    ).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+
+}
+
+
+/* =========================================================
+   REZERVASYON NUMARASI
+========================================================= */
+
+function generateBookingNumber() {
+
+  const time =
+    Date.now()
+      .toString()
+      .slice(-7);
+
+  const random =
+    Math.floor(
+      100 + Math.random() * 900
+    );
+
+  return `YC-${time}-${random}`;
+
+}
+
+
+/* =========================================================
+   WHATSAPP
+========================================================= */
+
+function openWhatsApp(message) {
+
+  if (!WHATSAPP_NUMBER) {
+
+    toast(
+      "WhatsApp numarası henüz eklenmedi."
+    );
+
+    return;
+
+  }
+
+
+  const url =
+    "https://wa.me/" +
+    WHATSAPP_NUMBER +
+    "?text=" +
+    encodeURIComponent(message);
+
+
+  window.open(
+    url,
+    "_blank",
+    "noopener,noreferrer"
+  );
+
+}
+
+
+/* =========================================================
    REZERVASYON
-========================= */
+========================================================= */
 
 function openBooking(id) {
 
   const hotel =
-    hotels.find(item => item.id === id);
+    hotels.find(
+      item => item.id === id
+    );
 
   if (!hotel) return;
 
@@ -514,45 +714,45 @@ function openBooking(id) {
 
 
       <label>
-
         Ad Soyad
 
         <input
           id="bookName"
+          type="text"
           required
+          autocomplete="name"
           placeholder="Adınız Soyadınız">
 
       </label>
 
 
       <label>
-
         E-posta
 
         <input
           id="bookEmail"
           type="email"
           required
+          autocomplete="email"
           placeholder="ornek@mail.com">
 
       </label>
 
 
       <label>
-
         Telefon
 
         <input
           id="bookPhone"
           type="tel"
           required
-          placeholder="+90">
+          autocomplete="tel"
+          placeholder="+90 5xx xxx xx xx">
 
       </label>
 
 
       <label>
-
         Giriş
 
         <input
@@ -564,7 +764,6 @@ function openBooking(id) {
 
 
       <label>
-
         Çıkış
 
         <input
@@ -576,24 +775,37 @@ function openBooking(id) {
 
 
       <label>
-
         Misafir
 
         <select id="bookGuests">
 
-          <option>1</option>
-
-          <option selected>
-            2
+          <option value="1">
+            1 kişi
           </option>
 
-          <option>3</option>
+          <option
+            value="2"
+            selected>
 
-          <option>4</option>
+            2 kişi
 
-          <option>5</option>
+          </option>
 
-          <option>6+</option>
+          <option value="3">
+            3 kişi
+          </option>
+
+          <option value="4">
+            4 kişi
+          </option>
+
+          <option value="5">
+            5 kişi
+          </option>
+
+          <option value="6+">
+            6+ kişi
+          </option>
 
         </select>
 
@@ -634,15 +846,30 @@ function openBooking(id) {
   );
 
 
-  const iso =
-    date => date.toISOString().slice(0, 10);
-
-
   $("#bookIn").value =
-    iso(tomorrow);
+    isoDate(tomorrow);
 
   $("#bookOut").value =
-    iso(after);
+    isoDate(after);
+
+
+  $("#bookIn").min =
+    isoDate(today);
+
+  $("#bookOut").min =
+    isoDate(tomorrow);
+
+
+  $("#bookIn")
+    .addEventListener(
+      "change",
+      () => {
+
+        $("#bookOut").min =
+          $("#bookIn").value;
+
+      }
+    );
 
 
   $("#bookingForm")
@@ -655,14 +882,30 @@ function openBooking(id) {
 
         const checkin =
           new Date(
-            $("#bookIn").value
+            $("#bookIn").value +
+            "T00:00:00"
           );
 
 
         const checkout =
           new Date(
-            $("#bookOut").value
+            $("#bookOut").value +
+            "T00:00:00"
           );
+
+
+        if (
+          !$("#bookIn").value ||
+          !$("#bookOut").value
+        ) {
+
+          toast(
+            "Lütfen tarihleri seçin."
+          );
+
+          return;
+
+        }
 
 
         if (checkout <= checkin) {
@@ -676,18 +919,31 @@ function openBooking(id) {
         }
 
 
+        const bookingNumber =
+          generateBookingNumber();
+
+
         const request = {
 
-          hotel: hotel.name,
+          bookingNumber,
+
+          hotelId:
+            hotel.id,
+
+          hotel:
+            hotel.name,
+
+          location:
+            hotel.location,
 
           name:
-            $("#bookName").value,
+            $("#bookName").value.trim(),
 
           email:
-            $("#bookEmail").value,
+            $("#bookEmail").value.trim(),
 
           phone:
-            $("#bookPhone").value,
+            $("#bookPhone").value.trim(),
 
           checkin:
             $("#bookIn").value,
@@ -696,10 +952,18 @@ function openBooking(id) {
             $("#bookOut").value,
 
           guests:
-            $("#bookGuests").value
+            $("#bookGuests").value,
+
+          createdAt:
+            new Date().toISOString(),
+
+          status:
+            "Yeni talep"
 
         };
 
+
+        /* SON REZERVASYON */
 
         localStorage.setItem(
           "yc_last_booking",
@@ -707,18 +971,83 @@ function openBooking(id) {
         );
 
 
+        /* TÜM REZERVASYONLAR */
+
+        const bookings =
+          JSON.parse(
+            localStorage.getItem(
+              "yc_bookings"
+            ) || "[]"
+          );
+
+
+        bookings.push(request);
+
+
+        localStorage.setItem(
+          "yc_bookings",
+          JSON.stringify(bookings)
+        );
+
+
+        /* WHATSAPP MESAJI */
+
+        const whatsappMessage =
+
+`Merhaba Yılmaz Çalışkan Turizm,
+
+Rezervasyon talebi oluşturmak istiyorum.
+
+Rezervasyon No:
+${bookingNumber}
+
+Otel:
+${hotel.name}
+
+Konum:
+${hotel.location}
+
+Ad Soyad:
+${request.name}
+
+Telefon:
+${request.phone}
+
+E-posta:
+${request.email}
+
+Giriş:
+${request.checkin}
+
+Çıkış:
+${request.checkout}
+
+Misafir:
+${request.guests}
+
+Teşekkürler.`;
+
+
         openModal(`
 
           <div
             style="
               text-align:center;
-              padding:15px;
+              padding:10px;
             ">
 
             <div
               style="
-                font-size:50px;
+                width:70px;
+                height:70px;
+                margin:0 auto 18px;
+                display:grid;
+                place-items:center;
+                border-radius:50%;
+                background:#eaf1ff;
                 color:#0b3d91;
+                font-size:38px;
+                font-weight:900;
               ">
 
               ✓
@@ -733,21 +1062,76 @@ function openBooking(id) {
 
             <p>
               Rezervasyon talebiniz
-              demo olarak kaydedildi.
+              bu cihazda kaydedildi.
             </p>
+
+
+            <div
+              class="booking-summary"
+              style="text-align:left;">
+
+              <strong>
+                Rezervasyon No:
+              </strong>
+
+              <br>
+
+              ${bookingNumber}
+
+              <br><br>
+
+              <strong>
+                ${hotel.name}
+              </strong>
+
+              <br>
+
+              ${request.checkin}
+              →
+              ${request.checkout}
+
+            </div>
 
 
             <button
               class="main-button"
-              id="successClose">
+              id="whatsappBooking"
+              type="button">
 
-              Tamam
+              💬 WhatsApp ile gönder
+
+            </button>
+
+
+            <button
+              class="main-button"
+              id="successClose"
+              type="button"
+              style="
+                background:#eef1f5;
+                color:#263348;
+              ">
+
+              Kapat
 
             </button>
 
           </div>
 
         `);
+
+
+        $("#whatsappBooking")
+          .addEventListener(
+            "click",
+            () => {
+
+              openWhatsApp(
+                whatsappMessage
+              );
+
+            }
+          );
 
 
         $("#successClose")
@@ -767,28 +1151,32 @@ function openBooking(id) {
 }
 
 
-/* =========================
+/* =========================================================
    FİLTRE
-========================= */
+========================================================= */
 
 function applyFilter(city) {
 
   const list =
     city === "all"
+
       ? hotels
+
       : hotels.filter(
-          hotel => hotel.city === city
+          hotel =>
+            hotel.city === city
         );
 
 
-  $$(".filter").forEach(button => {
+  $$(".filter")
+    .forEach(button => {
 
-    button.classList.toggle(
-      "active",
-      button.dataset.filter === city
-    );
+      button.classList.toggle(
+        "active",
+        button.dataset.filter === city
+      );
 
-  });
+    });
 
 
   renderHotels(list);
@@ -796,12 +1184,17 @@ function applyFilter(city) {
 }
 
 
-/* =========================
+/* =========================================================
    ANA ARAMA
-========================= */
+========================================================= */
 
-$("#searchForm")
-  .addEventListener(
+const searchForm =
+  $("#searchForm");
+
+
+if (searchForm) {
+
+  searchForm.addEventListener(
     "submit",
     event => {
 
@@ -812,15 +1205,39 @@ $("#searchForm")
         $("#destination").value;
 
 
+      const checkinValue =
+        $("#checkin").value;
+
+
+      const checkoutValue =
+        $("#checkout").value;
+
+
+      if (
+        !checkinValue ||
+        !checkoutValue
+      ) {
+
+        toast(
+          "Lütfen giriş ve çıkış tarihlerini seçin."
+        );
+
+        return;
+
+      }
+
+
       const checkin =
         new Date(
-          $("#checkin").value
+          checkinValue +
+          "T00:00:00"
         );
 
 
       const checkout =
         new Date(
-          $("#checkout").value
+          checkoutValue +
+          "T00:00:00"
         );
 
 
@@ -839,453 +1256,27 @@ $("#searchForm")
 
 
       $("#hotels")
-        .scrollIntoView({
+        ?.scrollIntoView({
           behavior: "smooth"
         });
 
 
       toast(
+
         city === "all"
+
           ? "Tüm oteller gösteriliyor."
+
           : "Seçtiğiniz destinasyon gösteriliyor."
+
       );
 
     }
   );
 
+}
 
-/* =========================
+
+/* =========================================================
    FİLTRE BUTONLARI
-========================= */
-
-$$(".filter").forEach(button => {
-
-  button.addEventListener(
-    "click",
-    () => {
-
-      applyFilter(
-        button.dataset.filter
-      );
-
-    }
-  );
-
-});
-
-
-/* =========================
-   DESTİNASYON KARTLARI
-========================= */
-
-$$(".destination-card")
-  .forEach(card => {
-
-    card.addEventListener(
-      "click",
-      () => {
-
-        const destination =
-          card.dataset.destination;
-
-
-        $("#destination").value =
-          destination;
-
-
-        applyFilter(destination);
-
-
-        $("#hotels")
-          .scrollIntoView({
-            behavior: "smooth"
-          });
-
-      }
-    );
-
-  });
-
-
-/* =========================
-   TÜMÜNÜ GÖR
-========================= */
-
-$("#showAll")
-  .addEventListener(
-    "click",
-    () => {
-
-      applyFilter("all");
-
-      $("#hotels")
-        .scrollIntoView({
-          behavior: "smooth"
-        });
-
-    }
-  );
-
-
-/* =========================
-   FAVORİLER
-========================= */
-
-$("#favoritesBtn")
-  .addEventListener(
-    "click",
-    () => {
-
-      const favoriteHotels =
-        hotels.filter(
-          hotel =>
-            favorites.includes(hotel.id)
-        );
-
-
-      renderHotels(
-        favoriteHotels
-      );
-
-
-      $("#hotels")
-        .scrollIntoView({
-          behavior: "smooth"
-        });
-
-
-      toast(
-        favoriteHotels.length
-          ? `${favoriteHotels.length} favori otel gösteriliyor.`
-          : "Henüz favori oteliniz yok."
-      );
-
-    }
-  );
-
-
-/* =========================
-   TUR DETAYLARI
-========================= */
-
-$$(".tour-detail")
-  .forEach(button => {
-
-    button.addEventListener(
-      "click",
-      () => {
-
-        const tour =
-          button.dataset.tour;
-
-
-        openModal(`
-
-          <span class="eyebrow blue">
-            TUR PROGRAMI
-          </span>
-
-
-          <h2>
-            ${tour}
-          </h2>
-
-
-          <p>
-            Bu tur hakkında detaylı bilgi,
-            tarih ve kişi seçenekleri için
-            Yılmaz Çalışkan Turizm ile
-            iletişime geçebilirsiniz.
-          </p>
-
-
-          <div class="booking-summary">
-
-            ✓ Program bilgisi
-
-            <br>
-
-            ✓ Konaklama seçeneği
-
-            <br>
-
-            ✓ Ulaşım planlaması
-
-            <br>
-
-            ✓ Destinasyon danışmanlığı
-
-          </div>
-
-
-          <button
-            class="main-button"
-            id="tourContact">
-
-            Tur hakkında bilgi al
-
-          </button>
-
-        `);
-
-
-        $("#tourContact")
-          .addEventListener(
-            "click",
-            () => {
-
-              closeModal();
-
-
-              $("#contact")
-                .scrollIntoView({
-                  behavior: "smooth"
-                });
-
-            }
-          );
-
-      }
-    );
-
-  });
-
-
-/* =========================
-   İLETİŞİM FORMU
-========================= */
-
-$("#contactForm")
-  .addEventListener(
-    "submit",
-    event => {
-
-      event.preventDefault();
-
-
-      const contact = {
-
-        name:
-          $("#contactName").value,
-
-        email:
-          $("#contactEmail").value,
-
-        message:
-          $("#contactMessage").value
-
-      };
-
-
-      localStorage.setItem(
-        "yc_contact",
-        JSON.stringify(contact)
-      );
-
-
-      event.target.reset();
-
-
-      toast(
-        "Mesajınız demo olarak kaydedildi."
-      );
-
-    }
-  );
-
-
-/* =========================
-   GİZLİLİK
-========================= */
-
-$("#privacy")
-  .addEventListener(
-    "click",
-    () => {
-
-      openModal(`
-
-        <h2>
-          Gizlilik Bilgilendirmesi
-        </h2>
-
-
-        <div
-          style="
-            color:#626d7d;
-            font-size:13px;
-            line-height:1.8;
-          ">
-
-          <p>
-            Bu demo sitede form verileri
-            herhangi bir sunucuya gönderilmez.
-          </p>
-
-
-          <p>
-            Rezervasyon ve iletişim formu
-            bilgileri yalnızca bu tarayıcıda
-            demo amacıyla tutulur.
-          </p>
-
-
-          <p>
-            Gerçek yayına geçmeden önce
-            KVKK aydınlatma metni, çerez
-            politikası ve gerekli yasal
-            metinler hazırlanmalıdır.
-          </p>
-
-        </div>
-
-      `);
-
-    }
-  );
-
-
-/* =========================
-   MODAL KAPATMA
-========================= */
-
-$("#modalClose")
-  .addEventListener(
-    "click",
-    closeModal
-  );
-
-
-$(".modal-bg")
-  .addEventListener(
-    "click",
-    closeModal
-  );
-
-
-document.addEventListener(
-  "keydown",
-  event => {
-
-    if (event.key === "Escape") {
-      closeModal();
-    }
-
-  }
-);
-
-
-/* =========================
-   MOBİL MENÜ
-========================= */
-
-$("#menuBtn")
-  .addEventListener(
-    "click",
-    () => {
-
-      $("#navMenu")
-        .classList.toggle("active");
-
-    }
-  );
-
-
-$$("#navMenu a")
-  .forEach(link => {
-
-    link.addEventListener(
-      "click",
-      () => {
-
-        $("#navMenu")
-          .classList.remove("active");
-
-      }
-    );
-
-  });
-
-
-/* =========================
-   TARİHLER
-========================= */
-
-const today =
-  new Date();
-
-
-const tomorrow =
-  new Date(today);
-
-tomorrow.setDate(
-  today.getDate() + 1
-);
-
-
-const afterTomorrow =
-  new Date(today);
-
-afterTomorrow.setDate(
-  today.getDate() + 3
-);
-
-
-const iso =
-  date => date.toISOString().slice(0, 10);
-
-
-$("#checkin").value =
-  iso(tomorrow);
-
-
-$("#checkout").value =
-  iso(afterTomorrow);
-
-
-$("#checkin").min =
-  iso(today);
-
-
-$("#checkout").min =
-  iso(tomorrow);
-
-
-$("#checkin")
-  .addEventListener(
-    "change",
-    () => {
-
-      $("#checkout").min =
-        $("#checkin").value;
-
-
-      if (
-        $("#checkout").value &&
-        $("#checkout").value <=
-        $("#checkin").value
-      ) {
-
-        $("#checkout").value = "";
-
-      }
-
-    }
-  );
-
-
-/* =========================
-   YIL
-========================= */
-
-$("#year").textContent =
-  new Date().getFullYear();
-
-
-/* =========================
-   BAŞLANGIÇ
-========================= */
-
-updateFavoriteCount();
-
-renderHotels();
+============
