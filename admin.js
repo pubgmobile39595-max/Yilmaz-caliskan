@@ -1,13 +1,14 @@
 /* =====================================================
    YILMAZ ÇALIŞKAN TURİZM
    GERÇEK SUPABASE ADMIN PANELİ
+   v2 - REZERVASYON YÖNETİM SİSTEMİ
 ===================================================== */
 
 "use strict";
 
 
 /* =====================================================
-   SUPABASE AYARLARI
+   SUPABASE
 ===================================================== */
 
 const SUPABASE_URL =
@@ -16,26 +17,24 @@ const SUPABASE_URL =
 const SUPABASE_PUBLISHABLE_KEY =
   "sb_publishable_jFv8ZP75Ais3eSjx_bsjzg_pAcgoJ0G";
 
-
 let supabaseClient = null;
 
 
 /* =====================================================
-   BAŞLANGIÇ
+   BAŞLAT
 ===================================================== */
 
 if (
   typeof window.supabase !== "undefined" &&
+  SUPABASE_PUBLISHABLE_KEY &&
   SUPABASE_PUBLISHABLE_KEY !==
     "BURAYA_PUBLISHABLE_KEYINI_YAPISTIR"
 ) {
-
   supabaseClient =
     window.supabase.createClient(
       SUPABASE_URL,
       SUPABASE_PUBLISHABLE_KEY
     );
-
 }
 
 
@@ -44,98 +43,58 @@ if (
 ===================================================== */
 
 const STORAGE = {
-
-  messages:
-    "yc_messages",
-
-  favorites:
-    "yc_favorites"
-
+  messages: "yc_messages",
+  favorites: "yc_favorites"
 };
 
 
 /* =====================================================
-   FALLBACK OTELLER
+   OTEL FALLBACK
 ===================================================== */
 
 const fallbackHotels = [
 
   {
     id: "ant-001",
-
-    name:
-      "Antalya Premium Resort",
-
-    location:
-      "Antalya",
-
-    price:
-      4500,
-
+    name: "Antalya Premium Resort",
+    location: "Antalya",
+    price: 4500,
     image:
       "https://images.unsplash.com/photo-1564501049412-61c2a3083791?auto=format&fit=crop&w=900&q=80"
   },
 
   {
     id: "bod-001",
-
-    name:
-      "Bodrum Luxury Resort",
-
-    location:
-      "Bodrum",
-
-    price:
-      5200,
-
+    name: "Bodrum Luxury Resort",
+    location: "Bodrum",
+    price: 5200,
     image:
       "https://images.unsplash.com/photo-1540541338287-41700207dee6?auto=format&fit=crop&w=900&q=80"
   },
 
   {
     id: "ces-001",
-
-    name:
-      "Çeşme Marina Hotel",
-
-    location:
-      "Çeşme",
-
-    price:
-      3900,
-
+    name: "Çeşme Marina Hotel",
+    location: "Çeşme",
+    price: 3900,
     image:
       "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=900&q=80"
   },
 
   {
     id: "kap-001",
-
-    name:
-      "Kapadokya Cave Hotel",
-
-    location:
-      "Kapadokya",
-
-    price:
-      3400,
-
+    name: "Kapadokya Cave Hotel",
+    location: "Kapadokya",
+    price: 3400,
     image:
       "https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&w=900&q=80"
   },
 
   {
     id: "ist-001",
-
-    name:
-      "İstanbul Bosphorus Hotel",
-
-    location:
-      "İstanbul",
-
-    price:
-      4800,
-
+    name: "İstanbul Bosphorus Hotel",
+    location: "İstanbul",
+    price: 4800,
     image:
       "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=900&q=80"
   }
@@ -144,13 +103,11 @@ const fallbackHotels = [
 
 
 /* =====================================================
-   YARDIMCILAR
+   YARDIMCI FONKSİYONLAR
 ===================================================== */
 
 function getElement(id) {
-
   return document.getElementById(id);
-
 }
 
 
@@ -160,140 +117,70 @@ function escapeHTML(value) {
     value === null ||
     value === undefined
   ) {
-
     return "";
-
   }
 
-
   return String(value)
-
-    .replaceAll(
-      "&",
-      "&amp;"
-    )
-
-    .replaceAll(
-      "<",
-      "&lt;"
-    )
-
-    .replaceAll(
-      ">",
-      "&gt;"
-    )
-
-    .replaceAll(
-      '"',
-      "&quot;"
-    )
-
-    .replaceAll(
-      "'",
-      "&#039;"
-    );
-
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
 }
 
 
 function formatDate(value) {
 
   if (!value) {
-
     return "-";
-
   }
 
+  const date = new Date(value);
 
-  const date =
-    new Date(value);
-
-
-  if (
-    Number.isNaN(
-      date.getTime()
-    )
-  ) {
-
+  if (Number.isNaN(date.getTime())) {
     return escapeHTML(value);
-
   }
-
 
   return new Intl.DateTimeFormat(
     "tr-TR",
     {
-      day:
-        "2-digit",
-
-      month:
-        "2-digit",
-
-      year:
-        "numeric"
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric"
     }
   ).format(date);
-
 }
 
 
 function formatDateTime(value) {
 
   if (!value) {
-
     return "-";
-
   }
 
+  const date = new Date(value);
 
-  const date =
-    new Date(value);
-
-
-  if (
-    Number.isNaN(
-      date.getTime()
-    )
-  ) {
-
+  if (Number.isNaN(date.getTime())) {
     return escapeHTML(value);
-
   }
-
 
   return new Intl.DateTimeFormat(
     "tr-TR",
     {
-      day:
-        "2-digit",
-
-      month:
-        "2-digit",
-
-      year:
-        "numeric",
-
-      hour:
-        "2-digit",
-
-      minute:
-        "2-digit"
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit"
     }
   ).format(date);
-
 }
 
 
 function showAlert(message) {
-
   window.alert(message);
-
 }
 
-
-/* =====================================================
-   LOCAL STORAGE
-===================================================== */
 
 function getStorageArray(key) {
 
@@ -302,17 +189,12 @@ function getStorageArray(key) {
     const value =
       localStorage.getItem(key);
 
-
     if (!value) {
-
       return [];
-
     }
-
 
     const parsed =
       JSON.parse(value);
-
 
     return Array.isArray(parsed)
       ? parsed
@@ -326,9 +208,44 @@ function getStorageArray(key) {
     );
 
     return [];
-
   }
+}
 
+
+function loadingState(text) {
+
+  return `
+    <div class="empty-state">
+      <div class="empty-icon">⏳</div>
+      <h3>${escapeHTML(text)}</h3>
+    </div>
+  `;
+}
+
+
+function emptyState(
+  icon,
+  title,
+  description
+) {
+
+  return `
+    <div class="empty-state">
+
+      <div class="empty-icon">
+        ${escapeHTML(icon)}
+      </div>
+
+      <h3>
+        ${escapeHTML(title)}
+      </h3>
+
+      <p>
+        ${escapeHTML(description)}
+      </p>
+
+    </div>
+  `;
 }
 
 
@@ -362,9 +279,7 @@ function getHotels() {
 
   }
 
-
   return fallbackHotels;
-
 }
 
 
@@ -381,17 +296,14 @@ function ensureSupabase() {
     );
 
     return false;
-
   }
 
-
   return true;
-
 }
 
 
 /* =====================================================
-   GERÇEK SUPABASE LOGIN
+   LOGIN
 ===================================================== */
 
 async function loginAdmin(
@@ -400,11 +312,8 @@ async function loginAdmin(
 ) {
 
   if (!ensureSupabase()) {
-
     return false;
-
   }
-
 
   try {
 
@@ -413,15 +322,9 @@ async function loginAdmin(
       error
     } =
       await supabaseClient.auth.signInWithPassword({
-
-        email:
-          email,
-
-        password:
-          password
-
+        email: email,
+        password: password
       });
-
 
     if (error) {
 
@@ -431,9 +334,7 @@ async function loginAdmin(
       );
 
       return false;
-
     }
-
 
     return Boolean(
       data &&
@@ -448,24 +349,19 @@ async function loginAdmin(
     );
 
     return false;
-
   }
-
 }
 
 
 /* =====================================================
-   OTURUM KONTROL
+   SESSION
 ===================================================== */
 
 async function getCurrentSession() {
 
   if (!ensureSupabase()) {
-
     return null;
-
   }
-
 
   try {
 
@@ -475,7 +371,6 @@ async function getCurrentSession() {
     } =
       await supabaseClient.auth.getSession();
 
-
     if (error) {
 
       console.error(
@@ -484,9 +379,7 @@ async function getCurrentSession() {
       );
 
       return null;
-
     }
-
 
     return data.session || null;
 
@@ -498,9 +391,7 @@ async function getCurrentSession() {
     );
 
     return null;
-
   }
-
 }
 
 
@@ -511,62 +402,36 @@ async function getCurrentSession() {
 function showLoginScreen() {
 
   const loginScreen =
-    getElement(
-      "loginScreen"
-    );
+    getElement("loginScreen");
 
   const adminPanel =
-    getElement(
-      "adminPanel"
-    );
-
+    getElement("adminPanel");
 
   if (loginScreen) {
-
-    loginScreen.hidden =
-      false;
-
+    loginScreen.hidden = false;
   }
-
 
   if (adminPanel) {
-
-    adminPanel.hidden =
-      true;
-
+    adminPanel.hidden = true;
   }
-
 }
 
 
 function showAdminPanel() {
 
   const loginScreen =
-    getElement(
-      "loginScreen"
-    );
+    getElement("loginScreen");
 
   const adminPanel =
-    getElement(
-      "adminPanel"
-    );
-
+    getElement("adminPanel");
 
   if (loginScreen) {
-
-    loginScreen.hidden =
-      true;
-
+    loginScreen.hidden = true;
   }
-
 
   if (adminPanel) {
-
-    adminPanel.hidden =
-      false;
-
+    adminPanel.hidden = false;
   }
-
 }
 
 
@@ -577,17 +442,11 @@ function showAdminPanel() {
 function setupLogin() {
 
   const form =
-    getElement(
-      "loginForm"
-    );
-
+    getElement("loginForm");
 
   if (!form) {
-
     return;
-
   }
-
 
   form.addEventListener(
     "submit",
@@ -595,31 +454,23 @@ function setupLogin() {
 
       event.preventDefault();
 
-
       const email =
         getElement(
           "adminUsername"
-        )?.value
-          ?.trim();
-
+        )?.value?.trim();
 
       const password =
         getElement(
           "adminPassword"
         )?.value;
 
-
       const errorBox =
-        getElement(
-          "loginError"
-        );
-
+        getElement("loginError");
 
       const button =
         form.querySelector(
           "button[type='submit']"
         );
-
 
       if (!email || !password) {
 
@@ -628,34 +479,23 @@ function setupLogin() {
           errorBox.textContent =
             "E-posta ve şifre zorunludur.";
 
-          errorBox.hidden =
-            false;
-
+          errorBox.hidden = false;
         }
 
         return;
-
       }
-
 
       if (button) {
 
-        button.disabled =
-          true;
+        button.disabled = true;
 
         button.textContent =
           "Giriş yapılıyor...";
-
       }
-
 
       if (errorBox) {
-
-        errorBox.hidden =
-          true;
-
+        errorBox.hidden = true;
       }
-
 
       const success =
         await loginAdmin(
@@ -663,31 +503,23 @@ function setupLogin() {
           password
         );
 
-
       if (success) {
 
         showAdminPanel();
-
 
         const emailDisplay =
           getElement(
             "adminEmailDisplay"
           );
 
-
         if (emailDisplay) {
-
           emailDisplay.textContent =
             email;
-
         }
-
 
         await loadDashboard();
 
-        showSection(
-          "dashboard"
-        );
+        showSection("dashboard");
 
       } else {
 
@@ -696,43 +528,32 @@ function setupLogin() {
           errorBox.textContent =
             "E-posta veya şifre hatalı.";
 
-          errorBox.hidden =
-            false;
-
+          errorBox.hidden = false;
         }
-
 
         const passwordInput =
           getElement(
             "adminPassword"
           );
 
-
         if (passwordInput) {
 
-          passwordInput.value =
-            "";
+          passwordInput.value = "";
 
           passwordInput.focus();
-
         }
-
       }
-
 
       if (button) {
 
-        button.disabled =
-          false;
+        button.disabled = false;
 
         button.textContent =
           "Panele Giriş Yap";
-
       }
 
     }
   );
-
 }
 
 
@@ -743,30 +564,19 @@ function setupLogin() {
 function setupLogout() {
 
   const button =
-    getElement(
-      "logoutButton"
-    );
-
+    getElement("logoutButton");
 
   if (!button) {
-
     return;
-
   }
-
 
   button.addEventListener(
     "click",
     async function() {
 
-      if (
-        !supabaseClient
-      ) {
-
+      if (!supabaseClient) {
         return;
-
       }
-
 
       try {
 
@@ -778,15 +588,12 @@ function setupLogout() {
           "Logout hatası:",
           error
         );
-
       }
-
 
       showLoginScreen();
 
     }
   );
-
 }
 
 
@@ -800,7 +607,6 @@ function setupNavigation() {
     document.querySelectorAll(
       ".nav-item"
     );
-
 
   navItems.forEach(
     function(button) {
@@ -825,7 +631,6 @@ function setupNavigation() {
       "[data-section-link]"
     );
 
-
   sectionLinks.forEach(
     function(button) {
 
@@ -842,9 +647,12 @@ function setupNavigation() {
 
     }
   );
-
 }
 
+
+/* =====================================================
+   SECTION
+===================================================== */
 
 async function showSection(
   sectionName
@@ -854,7 +662,6 @@ async function showSection(
     document.querySelectorAll(
       ".admin-section"
     );
-
 
   sections.forEach(
     function(section) {
@@ -873,13 +680,11 @@ async function showSection(
       "Section"
     );
 
-
   if (target) {
 
     target.classList.add(
       "active"
     );
-
   }
 
 
@@ -887,7 +692,6 @@ async function showSection(
     document.querySelectorAll(
       ".nav-item"
     );
-
 
   navItems.forEach(
     function(button) {
@@ -923,59 +727,34 @@ async function showSection(
 
 
   const title =
-    getElement(
-      "pageTitle"
-    );
-
+    getElement("pageTitle");
 
   if (title) {
 
     title.textContent =
       titles[sectionName] ||
       "Yönetim Paneli";
-
   }
 
 
-  if (
-    sectionName ===
-    "dashboard"
-  ) {
-
+  if (sectionName === "dashboard") {
     await loadDashboard();
-
   }
 
 
-  if (
-    sectionName ===
-    "bookings"
-  ) {
-
+  if (sectionName === "bookings") {
     await renderBookings();
-
   }
 
 
-  if (
-    sectionName ===
-    "messages"
-  ) {
-
+  if (sectionName === "messages") {
     renderMessages();
-
   }
 
 
-  if (
-    sectionName ===
-    "hotels"
-  ) {
-
+  if (sectionName === "hotels") {
     renderHotels();
-
   }
-
 }
 
 
@@ -986,11 +765,8 @@ async function showSection(
 async function getBookings() {
 
   if (!ensureSupabase()) {
-
     return [];
-
   }
-
 
   try {
 
@@ -999,23 +775,14 @@ async function getBookings() {
       error
     } =
       await supabaseClient
-
-        .from(
-          "bookings"
-        )
-
-        .select(
-          "*"
-        )
-
+        .from("bookings")
+        .select("*")
         .order(
           "created_at",
           {
-            ascending:
-              false
+            ascending: false
           }
         );
-
 
     if (error) {
 
@@ -1030,9 +797,7 @@ async function getBookings() {
       );
 
       return [];
-
     }
-
 
     return Array.isArray(data)
       ? data
@@ -1046,14 +811,12 @@ async function getBookings() {
     );
 
     return [];
-
   }
-
 }
 
 
 /* =====================================================
-   REZERVASYON FORMAT DÖNÜŞÜMÜ
+   REZERVASYON NORMALİZE
 ===================================================== */
 
 function normalizeBooking(
@@ -1107,7 +870,111 @@ function normalizeBooking(
       booking.created_at
 
   };
+}
 
+
+/* =====================================================
+   STATUS CLASS
+===================================================== */
+
+function getStatusClass(status) {
+
+  const normalized =
+    String(
+      status ||
+      "Yeni"
+    ).toLowerCase();
+
+  if (
+    normalized === "onaylandı" ||
+    normalized === "onaylandi"
+  ) {
+
+    return "success";
+  }
+
+  if (
+    normalized === "iptal"
+  ) {
+
+    return "danger";
+  }
+
+  if (
+    normalized === "inceleniyor" ||
+    normalized === "inceleniyor"
+  ) {
+
+    return "warning";
+  }
+
+  if (
+    normalized === "yeni"
+  ) {
+
+    return "warning";
+  }
+
+  return "neutral";
+}
+
+
+/* =====================================================
+   STATUS SELECT
+===================================================== */
+
+function createStatusSelect(
+  booking
+) {
+
+  const current =
+    booking.status ||
+    "Yeni";
+
+  const options = [
+    "Yeni",
+    "İnceleniyor",
+    "Onaylandı",
+    "İptal"
+  ];
+
+  let html = `
+
+    <select
+      class="booking-status-select"
+      data-status-id="${escapeHTML(
+        booking.id
+      )}"
+    >
+
+  `;
+
+  options.forEach(
+    function(option) {
+
+      html += `
+
+        <option
+          value="${escapeHTML(option)}"
+          ${
+            option === current
+              ? "selected"
+              : ""
+          }
+        >
+          ${escapeHTML(option)}
+        </option>
+
+      `;
+
+    }
+  );
+
+  html += `
+    </select>
+  `;
+
+  return html;
 }
 
 
@@ -1135,67 +1002,47 @@ async function loadDashboard() {
 
 
   const statHotels =
-    getElement(
-      "statHotels"
-    );
+    getElement("statHotels");
 
   const statBookings =
-    getElement(
-      "statBookings"
-    );
+    getElement("statBookings");
 
   const statMessages =
-    getElement(
-      "statMessages"
-    );
+    getElement("statMessages");
 
   const statFavorites =
-    getElement(
-      "statFavorites"
-    );
+    getElement("statFavorites");
 
 
   if (statHotels) {
-
     statHotels.textContent =
       hotels.length;
-
   }
-
 
   if (statBookings) {
-
     statBookings.textContent =
       bookings.length;
-
   }
-
 
   if (statMessages) {
-
     statMessages.textContent =
       messages.length;
-
   }
 
-
   if (statFavorites) {
-
     statFavorites.textContent =
       favorites.length;
-
   }
 
 
   renderDashboardBookings(
     bookings
   );
-
 }
 
 
 /* =====================================================
-   DASHBOARD REZERVASYONLARI
+   DASHBOARD SON REZERVASYONLAR
 ===================================================== */
 
 function renderDashboardBookings(
@@ -1207,23 +1054,14 @@ function renderDashboardBookings(
       "dashboardBookings"
     );
 
-
   if (!container) {
-
     return;
-
   }
-
 
   const bookings =
     rawBookings
-      .slice(
-        0,
-        5
-      )
-      .map(
-        normalizeBooking
-      );
+      .slice(0, 5)
+      .map(normalizeBooking);
 
 
   if (!bookings.length) {
@@ -1236,7 +1074,6 @@ function renderDashboardBookings(
       );
 
     return;
-
   }
 
 
@@ -1245,7 +1082,6 @@ function renderDashboardBookings(
       bookings,
       true
     );
-
 }
 
 
@@ -1260,13 +1096,9 @@ async function renderBookings() {
       "bookingsTable"
     );
 
-
   if (!container) {
-
     return;
-
   }
-
 
   container.innerHTML =
     loadingState(
@@ -1276,7 +1108,6 @@ async function renderBookings() {
 
   const rawBookings =
     await getBookings();
-
 
   const bookings =
     rawBookings.map(
@@ -1294,7 +1125,6 @@ async function renderBookings() {
       );
 
     return;
-
   }
 
 
@@ -1306,7 +1136,6 @@ async function renderBookings() {
 
 
   setupBookingActions();
-
 }
 
 
@@ -1321,35 +1150,37 @@ function createBookingsTable(
 
   let html = `
 
-    <table class="admin-table">
+    <div class="booking-table-wrapper">
 
-      <thead>
+      <table class="admin-table">
 
-        <tr>
+        <thead>
 
-          <th>Rezervasyon</th>
+          <tr>
 
-          <th>Müşteri</th>
+            <th>Rezervasyon</th>
 
-          <th>Otel</th>
+            <th>Müşteri</th>
 
-          <th>Tarih</th>
+            <th>Otel</th>
 
-          <th>Kişi</th>
+            <th>Tarih</th>
 
-          <th>Durum</th>
+            <th>Kişi</th>
 
-          ${
-            compact
-              ? ""
-              : "<th>İşlem</th>"
-          }
+            <th>Durum</th>
 
-        </tr>
+            ${
+              compact
+                ? ""
+                : "<th>İşlem</th>"
+            }
 
-      </thead>
+          </tr>
 
-      <tbody>
+        </thead>
+
+        <tbody>
 
   `;
 
@@ -1358,47 +1189,11 @@ function createBookingsTable(
     function(booking) {
 
       const status =
-        String(
-          booking.status ||
-          "Yeni"
-        );
+        booking.status ||
+        "Yeni";
 
-
-      let statusClass =
-        "neutral";
-
-
-      if (
-        status.toLowerCase() ===
-        "yeni"
-      ) {
-
-        statusClass =
-          "warning";
-
-      }
-
-
-      if (
-        status.toLowerCase() ===
-        "onaylandı"
-      ) {
-
-        statusClass =
-          "";
-
-      }
-
-
-      if (
-        status.toLowerCase() ===
-        "iptal"
-      ) {
-
-        statusClass =
-          "danger";
-
-      }
+      const statusClass =
+        getStatusClass(status);
 
 
       html += `
@@ -1472,10 +1267,8 @@ function createBookingsTable(
 
             <span class="table-primary">
 
-              ${escapeHTML(
-                formatDate(
-                  booking.checkin
-                )
+              ${formatDate(
+                booking.checkin
               )}
 
             </span>
@@ -1484,10 +1277,8 @@ function createBookingsTable(
 
               →
 
-              ${escapeHTML(
-                formatDate(
-                  booking.checkout
-                )
+              ${formatDate(
+                booking.checkout
               )}
 
             </span>
@@ -1506,14 +1297,18 @@ function createBookingsTable(
 
           <td>
 
-            <span
-              class="status-badge ${statusClass}">
-
-              ${escapeHTML(
-                status
-              )}
-
-            </span>
+            ${
+              compact
+                ? `
+                  <span
+                    class="status-badge ${statusClass}">
+                    ${escapeHTML(status)}
+                  </span>
+                `
+                : createStatusSelect(
+                    booking
+                  )
+            }
 
           </td>
 
@@ -1521,35 +1316,3 @@ function createBookingsTable(
 
 
       if (!compact) {
-
-        html += `
-
-          <td>
-
-            <div
-              class="action-buttons">
-
-              <button
-                class="action-button"
-                data-booking-action="view"
-                data-booking-id="${escapeHTML(
-                  booking.bookingNumber
-                )}">
-
-                Görüntüle
-
-              </button>
-
-
-              ${
-                booking.phone &&
-                booking.phone !== "-"
-                  ? `
-
-                    <button
-                      class="action-button whatsapp"
-                      data-booking-action="whatsapp"
-                      data-phone="${escapeHTML(
-                        booking.phone
-                      )}"
-                      data-name
