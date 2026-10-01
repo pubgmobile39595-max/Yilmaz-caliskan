@@ -1,7 +1,36 @@
 /* =========================================================
    YILMAZ ÇALIŞKAN TURİZM
    MAIN JAVASCRIPT
+   SUPABASE + LOCAL STORAGE
 ========================================================= */
+
+
+/* =========================================================
+   SUPABASE AYARLARI
+========================================================= */
+
+const SUPABASE_URL =
+ https://vbaglsnkmahnwdazqcue.supabase.co
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_jFv8ZP75Ais3eSjx_bsjzg_pAcgoJ0G";
+
+
+let supabaseClient = null;
+
+if (
+  typeof window.supabase !== "undefined" &&
+  SUPABASE_PUBLISHABLE_KEY !==
+    "BURAYA_PUBLISHABLE_KEYINI_YAPISTIR"
+) {
+
+  supabaseClient =
+    window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_PUBLISHABLE_KEY
+    );
+
+}
 
 
 /* =========================================================
@@ -113,15 +142,6 @@ const hotels = [
    AYARLAR
 ========================================================= */
 
-/*
-  BURAYA GERÇEK WHATSAPP NUMARASINI DAHA SONRA YAZACAĞIZ.
-
-  Örnek:
-  905321234567
-
-  + işareti kullanma.
-*/
-
 const WHATSAPP_NUMBER = "";
 
 
@@ -137,12 +157,11 @@ let currentHotels = [...hotels];
 
 
 /* =========================================================
-   KISA DOM FONKSİYONLARI
+   DOM
 ========================================================= */
 
 const $ = selector =>
   document.querySelector(selector);
-
 
 const $$ = selector =>
   [...document.querySelectorAll(selector)];
@@ -154,15 +173,14 @@ const $$ = selector =>
 
 function money(value) {
 
-  return new Intl.NumberFormat("tr-TR", {
-
-    style: "currency",
-
-    currency: "TRY",
-
-    maximumFractionDigits: 0
-
-  }).format(value);
+  return new Intl.NumberFormat(
+    "tr-TR",
+    {
+      style: "currency",
+      currency: "TRY",
+      maximumFractionDigits: 0
+    }
+  ).format(value);
 
 }
 
@@ -183,11 +201,10 @@ function toast(message) {
 
   clearTimeout(window.toastTimer);
 
-  window.toastTimer = setTimeout(() => {
-
-    element.classList.remove("show");
-
-  }, 2800);
+  window.toastTimer =
+    setTimeout(() => {
+      element.classList.remove("show");
+    }, 2800);
 
 }
 
@@ -198,7 +215,8 @@ function toast(message) {
 
 function updateFavoriteCount() {
 
-  const element = $("#favoriteCount");
+  const element =
+    $("#favoriteCount");
 
   if (!element) return;
 
@@ -265,9 +283,11 @@ function renderHotels(list = hotels) {
 
   currentHotels = [...list];
 
-  const grid = $("#hotelGrid");
+  const grid =
+    $("#hotelGrid");
 
-  const empty = $("#empty");
+  const empty =
+    $("#empty");
 
   if (!grid || !empty) return;
 
@@ -304,7 +324,6 @@ function renderHotels(list = hotels) {
 
         </button>
 
-
         <span class="rating">
 
           ★ ${hotel.rating}
@@ -317,23 +336,19 @@ function renderHotels(list = hotels) {
 
       </div>
 
-
       <div class="hotel-content">
 
         <span class="hotel-location">
           ${hotel.location}
         </span>
 
-
         <h3>
           ${hotel.name}
         </h3>
 
-
         <p>
           ${hotel.desc}
         </p>
-
 
         <div class="hotel-bottom">
 
@@ -349,7 +364,6 @@ function renderHotels(list = hotels) {
 
           </div>
 
-
           <div class="hotel-actions">
 
             <button
@@ -360,7 +374,6 @@ function renderHotels(list = hotels) {
               Detay
 
             </button>
-
 
             <button
               class="small-button primary"
@@ -379,13 +392,10 @@ function renderHotels(list = hotels) {
 
     `;
 
-
     grid.appendChild(card);
 
   });
 
-
-  /* FAVORİ */
 
   $$("[data-favorite]")
     .forEach(button => {
@@ -406,8 +416,6 @@ function renderHotels(list = hotels) {
     });
 
 
-  /* DETAY */
-
   $$("[data-detail]")
     .forEach(button => {
 
@@ -426,8 +434,6 @@ function renderHotels(list = hotels) {
 
     });
 
-
-  /* REZERVASYON */
 
   $$("[data-book]")
     .forEach(button => {
@@ -529,21 +535,17 @@ function openHotel(id) {
       ">
     </div>
 
-
     <span class="eyebrow blue">
       ${hotel.location}
     </span>
-
 
     <h2>
       ${hotel.name}
     </h2>
 
-
     <p>
       ${hotel.desc}
     </p>
-
 
     <div class="booking-summary">
 
@@ -562,7 +564,6 @@ function openHotel(id) {
       / gece
 
     </div>
-
 
     <button
       class="main-button"
@@ -592,7 +593,7 @@ function openHotel(id) {
 
 
 /* =========================================================
-   TARİH FORMAT
+   TARİH
 ========================================================= */
 
 function isoDate(date) {
@@ -628,7 +629,8 @@ function generateBookingNumber() {
 
   const random =
     Math.floor(
-      100 + Math.random() * 900
+      100 +
+      Math.random() * 900
     );
 
   return `YC-${time}-${random}`;
@@ -652,19 +654,123 @@ function openWhatsApp(message) {
 
   }
 
-
   const url =
     "https://wa.me/" +
     WHATSAPP_NUMBER +
     "?text=" +
     encodeURIComponent(message);
 
-
   window.open(
     url,
     "_blank",
     "noopener,noreferrer"
   );
+
+}
+
+
+/* =========================================================
+   SUPABASE REZERVASYON KAYDI
+========================================================= */
+
+async function saveBookingToSupabase(request) {
+
+  if (!supabaseClient) {
+
+    console.warn(
+      "Supabase bağlantısı hazır değil."
+    );
+
+    return {
+      success: false,
+      error: "Supabase bağlantısı bulunamadı."
+    };
+
+  }
+
+
+  try {
+
+    const { data, error } =
+      await supabaseClient
+        .from("bookings")
+        .insert({
+
+          booking_number:
+            request.bookingNumber,
+
+          customer_name:
+            request.name,
+
+          email:
+            request.email,
+
+          phone:
+            request.phone,
+
+          hotel_name:
+            request.hotel,
+
+          location:
+            request.location,
+
+          checkin:
+            request.checkin,
+
+          checkout:
+            request.checkout,
+
+          guests:
+            request.guests,
+
+          status:
+            request.status
+
+        })
+        .select()
+        .single();
+
+
+    if (error) {
+
+      console.error(
+        "Supabase rezervasyon hatası:",
+        error
+      );
+
+      return {
+        success: false,
+        error: error.message
+      };
+
+    }
+
+
+    console.log(
+      "Rezervasyon Supabase'e kaydedildi:",
+      data
+    );
+
+
+    return {
+      success: true,
+      data
+    };
+
+
+  } catch (error) {
+
+    console.error(
+      "Supabase bağlantı hatası:",
+      error
+    );
+
+    return {
+      success: false,
+      error: error.message
+    };
+
+  }
 
 }
 
@@ -689,11 +795,9 @@ function openBooking(id) {
       Rezervasyon talebi
     </h2>
 
-
     <p>
       ${hotel.name}
     </p>
-
 
     <div class="booking-summary">
 
@@ -707,11 +811,9 @@ function openBooking(id) {
 
     </div>
 
-
     <form
       class="booking-form"
       id="bookingForm">
-
 
       <label>
         Ad Soyad
@@ -725,7 +827,6 @@ function openBooking(id) {
 
       </label>
 
-
       <label>
         E-posta
 
@@ -737,7 +838,6 @@ function openBooking(id) {
           placeholder="ornek@mail.com">
 
       </label>
-
 
       <label>
         Telefon
@@ -751,7 +851,6 @@ function openBooking(id) {
 
       </label>
 
-
       <label>
         Giriş
 
@@ -761,7 +860,6 @@ function openBooking(id) {
           required>
 
       </label>
-
 
       <label>
         Çıkış
@@ -773,7 +871,6 @@ function openBooking(id) {
 
       </label>
 
-
       <label>
         Misafir
 
@@ -783,12 +880,8 @@ function openBooking(id) {
             1 kişi
           </option>
 
-          <option
-            value="2"
-            selected>
-
+          <option value="2" selected>
             2 kişi
-
           </option>
 
           <option value="3">
@@ -811,15 +904,14 @@ function openBooking(id) {
 
       </label>
 
-
       <button
         class="main-button"
+        id="bookingSubmit"
         type="submit">
 
         Rezervasyon talebi gönder
 
       </button>
-
 
     </form>
 
@@ -846,153 +938,250 @@ function openBooking(id) {
   );
 
 
-  $("#bookIn").value =
-    isoDate(tomorrow);
+  const bookIn =
+    $("#bookIn");
 
-  $("#bookOut").value =
-    isoDate(after);
-
-
-  $("#bookIn").min =
-    isoDate(today);
-
-  $("#bookOut").min =
-    isoDate(tomorrow);
+  const bookOut =
+    $("#bookOut");
 
 
-  $("#bookIn")
-    .addEventListener(
+  if (bookIn) {
+
+    bookIn.value =
+      isoDate(tomorrow);
+
+    bookIn.min =
+      isoDate(today);
+
+  }
+
+
+  if (bookOut) {
+
+    bookOut.value =
+      isoDate(after);
+
+    bookOut.min =
+      isoDate(tomorrow);
+
+  }
+
+
+  if (bookIn && bookOut) {
+
+    bookIn.addEventListener(
       "change",
       () => {
 
-        $("#bookOut").min =
-          $("#bookIn").value;
+        bookOut.min =
+          bookIn.value;
 
       }
     );
 
-
-  $("#bookingForm")
-    .addEventListener(
-      "submit",
-      event => {
-
-        event.preventDefault();
+  }
 
 
-        const checkin =
-          new Date(
-            $("#bookIn").value +
-            "T00:00:00"
-          );
+  const bookingForm =
+    $("#bookingForm");
 
 
-        const checkout =
-          new Date(
-            $("#bookOut").value +
-            "T00:00:00"
-          );
+  if (!bookingForm) return;
 
 
-        if (
-          !$("#bookIn").value ||
-          !$("#bookOut").value
-        ) {
+  bookingForm.addEventListener(
+    "submit",
+    async event => {
 
-          toast(
-            "Lütfen tarihleri seçin."
-          );
-
-          return;
-
-        }
+      event.preventDefault();
 
 
-        if (checkout <= checkin) {
+      const checkinValue =
+        $("#bookIn").value;
 
-          toast(
-            "Çıkış tarihi giriş tarihinden sonra olmalı."
-          );
-
-          return;
-
-        }
+      const checkoutValue =
+        $("#bookOut").value;
 
 
-        const bookingNumber =
-          generateBookingNumber();
+      if (
+        !checkinValue ||
+        !checkoutValue
+      ) {
+
+        toast(
+          "Lütfen tarihleri seçin."
+        );
+
+        return;
+
+      }
 
 
-        const request = {
-
-          bookingNumber,
-
-          hotelId:
-            hotel.id,
-
-          hotel:
-            hotel.name,
-
-          location:
-            hotel.location,
-
-          name:
-            $("#bookName").value.trim(),
-
-          email:
-            $("#bookEmail").value.trim(),
-
-          phone:
-            $("#bookPhone").value.trim(),
-
-          checkin:
-            $("#bookIn").value,
-
-          checkout:
-            $("#bookOut").value,
-
-          guests:
-            $("#bookGuests").value,
-
-          createdAt:
-            new Date().toISOString(),
-
-          status:
-            "Yeni talep"
-
-        };
-
-
-        /* SON REZERVASYON */
-
-        localStorage.setItem(
-          "yc_last_booking",
-          JSON.stringify(request)
+      const checkin =
+        new Date(
+          checkinValue +
+          "T00:00:00"
         );
 
 
-        /* TÜM REZERVASYONLAR */
-
-        const bookings =
-          JSON.parse(
-            localStorage.getItem(
-              "yc_bookings"
-            ) || "[]"
-          );
-
-
-        bookings.push(request);
-
-
-        localStorage.setItem(
-          "yc_bookings",
-          JSON.stringify(bookings)
+      const checkout =
+        new Date(
+          checkoutValue +
+          "T00:00:00"
         );
 
 
-        /* WHATSAPP MESAJI */
+      if (checkout <= checkin) {
 
-        const whatsappMessage =
+        toast(
+          "Çıkış tarihi giriş tarihinden sonra olmalı."
+        );
+
+        return;
+
+      }
+
+
+      const name =
+        $("#bookName")
+          .value
+          .trim();
+
+      const email =
+        $("#bookEmail")
+          .value
+          .trim();
+
+      const phone =
+        $("#bookPhone")
+          .value
+          .trim();
+
+      const guests =
+        $("#bookGuests")
+          .value;
+
+
+      if (!name || !email || !phone) {
+
+        toast(
+          "Lütfen tüm bilgileri doldurun."
+        );
+
+        return;
+
+      }
+
+
+      const bookingNumber =
+        generateBookingNumber();
+
+
+      const request = {
+
+        bookingNumber,
+
+        hotelId:
+          hotel.id,
+
+        hotel:
+          hotel.name,
+
+        location:
+          hotel.location,
+
+        name,
+
+        email,
+
+        phone,
+
+        checkin:
+          checkinValue,
+
+        checkout:
+          checkoutValue,
+
+        guests,
+
+        createdAt:
+          new Date().toISOString(),
+
+        status:
+          "Yeni talep"
+
+      };
+
+
+      /* =====================================================
+         LOCAL STORAGE
+      ===================================================== */
+
+      localStorage.setItem(
+        "yc_last_booking",
+        JSON.stringify(request)
+      );
+
+
+      const bookings =
+        JSON.parse(
+          localStorage.getItem(
+            "yc_bookings"
+          ) || "[]"
+        );
+
+
+      bookings.push(request);
+
+
+      localStorage.setItem(
+        "yc_bookings",
+        JSON.stringify(bookings)
+      );
+
+
+      /* =====================================================
+         BUTON DURUMU
+      ===================================================== */
+
+      const submitButton =
+        $("#bookingSubmit");
+
+
+      if (submitButton) {
+
+        submitButton.disabled =
+          true;
+
+        submitButton.textContent =
+          "Rezervasyon gönderiliyor...";
+
+      }
+
+
+      /* =====================================================
+         SUPABASE
+      ===================================================== */
+
+      const result =
+        await saveBookingToSupabase(
+          request
+        );
+
+
+      if (submitButton) {
+
+        submitButton.disabled =
+          false;
+
+      }
+
+
+      /* =====================================================
+         WHATSAPP
+      ===================================================== */
+
+      const whatsappMessage =
 
 `Merhaba Yılmaz Çalışkan Turizm,
 
@@ -1028,255 +1217,30 @@ ${request.guests}
 Teşekkürler.`;
 
 
-        openModal(`
+      /* =====================================================
+         BAŞARI EKRANI
+      ===================================================== */
+
+      openModal(`
+
+        <div
+          style="
+            text-align:center;
+            padding:10px;
+          ">
 
           <div
             style="
-              text-align:center;
-              padding:10px;
+              width:70px;
+              height:70px;
+              margin:0 auto 18px;
+              display:grid;
+              place-items:center;
+              border-radius:50%;
+              background:#eaf1ff;
+              color:#0b3d91;
+              font-size:38px;
+              font-weight:900;
             ">
 
-            <div
-              style="
-                width:70px;
-                height:70px;
-                margin:0 auto 18px;
-                display:grid;
-                place-items:center;
-                border-radius:50%;
-                background:#eaf1ff;
-                color:#0b3d91;
-                font-size:38px;
-                font-weight:900;
-              ">
-
-              ✓
-
-            </div>
-
-
-            <h2>
-              Talebiniz alındı
-            </h2>
-
-
-            <p>
-              Rezervasyon talebiniz
-              bu cihazda kaydedildi.
-            </p>
-
-
-            <div
-              class="booking-summary"
-              style="text-align:left;">
-
-              <strong>
-                Rezervasyon No:
-              </strong>
-
-              <br>
-
-              ${bookingNumber}
-
-              <br><br>
-
-              <strong>
-                ${hotel.name}
-              </strong>
-
-              <br>
-
-              ${request.checkin}
-              →
-              ${request.checkout}
-
-            </div>
-
-
-            <button
-              class="main-button"
-              id="whatsappBooking"
-              type="button">
-
-              💬 WhatsApp ile gönder
-
-            </button>
-
-
-            <button
-              class="main-button"
-              id="successClose"
-              type="button"
-              style="
-                background:#eef1f5;
-                color:#263348;
-              ">
-
-              Kapat
-
-            </button>
-
-          </div>
-
-        `);
-
-
-        $("#whatsappBooking")
-          .addEventListener(
-            "click",
-            () => {
-
-              openWhatsApp(
-                whatsappMessage
-              );
-
-            }
-          );
-
-
-        $("#successClose")
-          .addEventListener(
-            "click",
-            closeModal
-          );
-
-
-        toast(
-          "Rezervasyon talebi kaydedildi."
-        );
-
-      }
-    );
-
-}
-
-
-/* =========================================================
-   FİLTRE
-========================================================= */
-
-function applyFilter(city) {
-
-  const list =
-    city === "all"
-
-      ? hotels
-
-      : hotels.filter(
-          hotel =>
-            hotel.city === city
-        );
-
-
-  $$(".filter")
-    .forEach(button => {
-
-      button.classList.toggle(
-        "active",
-        button.dataset.filter === city
-      );
-
-    });
-
-
-  renderHotels(list);
-
-}
-
-
-/* =========================================================
-   ANA ARAMA
-========================================================= */
-
-const searchForm =
-  $("#searchForm");
-
-
-if (searchForm) {
-
-  searchForm.addEventListener(
-    "submit",
-    event => {
-
-      event.preventDefault();
-
-
-      const city =
-        $("#destination").value;
-
-
-      const checkinValue =
-        $("#checkin").value;
-
-
-      const checkoutValue =
-        $("#checkout").value;
-
-
-      if (
-        !checkinValue ||
-        !checkoutValue
-      ) {
-
-        toast(
-          "Lütfen giriş ve çıkış tarihlerini seçin."
-        );
-
-        return;
-
-      }
-
-
-      const checkin =
-        new Date(
-          checkinValue +
-          "T00:00:00"
-        );
-
-
-      const checkout =
-        new Date(
-          checkoutValue +
-          "T00:00:00"
-        );
-
-
-      if (checkout <= checkin) {
-
-        toast(
-          "Çıkış tarihi giriş tarihinden sonra olmalı."
-        );
-
-        return;
-
-      }
-
-
-      applyFilter(city);
-
-
-      $("#hotels")
-        ?.scrollIntoView({
-          behavior: "smooth"
-        });
-
-
-      toast(
-
-        city === "all"
-
-          ? "Tüm oteller gösteriliyor."
-
-          : "Seçtiğiniz destinasyon gösteriliyor."
-
-      );
-
-    }
-  );
-
-}
-
-
-/* =========================================================
-   FİLTRE BUTONLARI
-============
+        
