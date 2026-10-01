@@ -10,7 +10,7 @@
 ========================================================= */
 
 const SUPABASE_URL =
- https://vbaglsnkmahnwdazqcue.supabase.co
+  "https://vbaglsnkmahnwdazqcue.supabase.co";
 
 const SUPABASE_PUBLISHABLE_KEY =
   "sb_publishable_jFv8ZP75Ais3eSjx_bsjzg_pAcgoJ0G";
