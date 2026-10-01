@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="robots"
+    content="noindex,nofollow">
+
+  <title>
+    Yönetim Paneli | Yılmaz Çalışkan Turizm
+  </title>
+
+  <link
+    rel="stylesheet"
+    href="admin.css">
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     GİRİŞ
+===================================================== -->
+
+<section
+  id="loginScreen"
+  class="login-screen">
+
+  <div class="login-box">
+
+    <div class="logo">
+      YC
+    </div>
+
+    <span class="eyebrow">
+      YILMAZ ÇALIŞKAN TURİZM
+    </span>
+
+    <h1>
+      Yönetim Paneli
+    </h1>
+
+    <p>
+      Yönetici hesabınızla giriş yapın.
+    </p>
+
+
+    <form id="loginForm">
+
+      <label>
+
+        Kullanıcı adı
+
+        <input
+          id="adminUsername"
+          type="text"
+          autocomplete="username"
+          required
+          placeholder="Yönetici kullanıcı adı">
+
+      </label>
+
+
+      <label>
+
+        Şifre
+
+        <input
+          id="adminPassword"
+          type="password"
+          autocomplete="current-password"
+          required
+          placeholder="Şifre">
+
+      </label>
+
+
+      <button
+        type="submit"
+        class="login-button">
+
+        Panele Giriş Yap
+
+      </button>
+
+
+      <div
+        id="loginError"
+        class="login-error"
+        hidden>
+
+        Kullanıcı adı veya şifre hatalı.
+
+      </div>
+
+    </form>
+
+
+    <a
+      href="index.html"
+      class="back-link">
+
+      ← Siteye dön
+
+    </a>
+
+  </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     PANEL
+===================================================== -->
+
+<section
+  id="adminPanel"
+  class="admin-panel"
+  hidden>
+
+
+  <!-- SIDEBAR -->
+
+  <aside class="sidebar">
+
+    <div class="brand">
+
+      <div class="brand-logo">
+        YC
+      </div>
+
+      <div>
+
+        <strong>
+          Yılmaz Çalışkan
+        </strong>
+
+        <small>
+          Turizm Yönetim
+        </small>
+
+      </div>
+
+    </div>
+
+
+    <nav>
+
+      <button
+        class="nav-item active"
+        data-section="dashboard">
+
+        📊
+        <span>Dashboard</span>
+
+      </button>
+
+
+      <button
+        class="nav-item"
+        data-section="bookings">
+
+        🏨
+        <span>Rezervasyonlar</span>
+
+      </button>
+
+
+      <button
+        class="nav-item"
+        data-section="messages">
+
+        📩
+        <span>Mesajlar</span>
+
+      </button>
+
+
+      <button
+        class="nav-item"
+        data-section="hotels">
+
+        🏨
+        <span>Oteller</span>
+
+      </button>
+
+
+      <button
+        class="nav-item"
+        data-section="settings">
+
+        ⚙️
+        <span>Ayarlar</span>
+
+      </button>
+
+    </nav>
+
+
+    <button
+      id="logoutButton"
+      class="logout">
+
+      🚪
+      Çıkış Yap
+
+    </button>
+
+  </aside>
+
+
+
+  <!-- MAIN -->
+
+  <main class="main">
+
+
+    <!-- TOPBAR -->
+
+    <header class="topbar">
+
+      <div>
+
+        <span class="eyebrow">
+          YÖNETİM PANELİ
+        </span>
+
+        <h1 id="pageTitle">
+          Dashboard
+        </h1>
+
+      </div>
+
+
+      <div class="admin-user">
+
+        <div class="avatar">
+          YC
+        </div>
+
+        <div>
+
+          <strong>
+            Yönetici
+          </strong>
+
+          <small>
+            Yılmaz Çalışkan Turizm
+          </small>
+
+        </div>
+
+      </div>
+
+    </header>
+
+
+
+    <!-- =================================================
+         DASHBOARD
+    ================================================= -->
+
+    <section
+      id="dashboardSection"
+      class="admin-section active">
+
+
+      <div class="stats-grid">
+
+
+        <div class="stat-card">
+
+          <span>
+            🏨
+          </span>
+
+          <div>
+
+            <small>
+              Toplam Otel
+            </small>
+
+            <strong id="statHotels">
+              0
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <span>
+            📅
+          </span>
+
+          <div>
+
+            <small>
+              Rezervasyon
+            </small>
+
+            <strong id="statBookings">
+              0
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <span>
+            📩
+          </span>
+
+          <div>
+
+            <small>
+              Mesaj
+            </small>
+
+            <strong id="statMessages">
+              0
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <span>
+            ❤️
+          </span>
+
+          <div>
+
+            <small>
+              Favori
+            </small>
+
+            <strong id="statFavorites">
+              0
+            </strong>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <div class="panel-card">
+
+        <div class="panel-header">
+
+          <div>
+
+            <span class="eyebrow">
+              SON İŞLEMLER
+            </span>
+
+            <h2>
+              Son rezervasyonlar
+            </h2>
+
+          </div>
+
+          <button
+            class="secondary-button"
+            data-section-link="bookings">
+
+            Tümünü Gör
+
+          </button>
+
+        </div>
+
+
+        <div
+          id="dashboardBookings"
+          class="table-wrapper">
+
+        </div>
+
+      </div>
+
+
+    </section>
+
+
+
+    <!-- =================================================
+         REZERVASYONLAR
+    ================================================= -->
+
+    <section
+      id="bookingsSection"
+      class="admin-section">
+
+
+      <div class="panel-card">
+
+        <div class="panel-header">
+
+          <div>
+
+            <span class="eyebrow">
+              REZERVASYON YÖNETİMİ
+            </span>
+
+            <h2>
+              Rezervasyon Talepleri
+            </h2>
+
+          </div>
+
+
+          <button
+            id="refreshBookings"
+            class="secondary-button">
+
+            ↻ Yenile
+
+          </button>
+
+        </div>
+
+
+        <div
+          id="bookingsTable"
+          class="table-wrapper">
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         MESAJLAR
+    ================================================= -->
+
+    <section
+      id="messagesSection"
+      class="admin-section">
+
+
+      <div class="panel-card">
+
+        <div class="panel-header">
+
+          <div>
+
+            <span class="eyebrow">
+              İLETİŞİM
+            </span>
+
+            <h2>
+              Gelen Mesajlar
+            </h2>
+
+          </div>
+
+        </div>
+
+
+        <div
+          id="messagesTable"
+          class="table-wrapper">
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         OTELLER
+    ================================================= -->
+
+    <section
+      id="hotelsSection"
+      class="admin-section">
+
+
+      <div class="panel-card">
+
+        <div class="panel-header">
+
+          <div>
+
+            <span class="eyebrow">
+              KONAKLAMA
+            </span>
+
+            <h2>
+              Oteller
+            </h2>
+
+          </div>
+
+
+          <span class="status-badge">
+            Demo katalog
+          </span>
+
+        </div>
+
+
+        <div
+          id="hotelsTable"
+          class="hotel-admin-grid">
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         AYARLAR
+    ================================================= -->
+
+    <section
+      id="settingsSection"
+      class="admin-section">
+
+
+      <div class="panel-card">
+
+        <span class="eyebrow">
+          SİSTEM
+        </span>
+
+        <h2>
+          Site Ayarları
+        </h2>
+
+
+        <div class="setting-row">
+
+          <div>
+
+            <strong>
+              WhatsApp
+            </strong>
+
+            <p>
+              Rezervasyon taleplerinin
+              WhatsApp'a gönderileceği numara.
+            </p>
+
+          </div>
+
+
+          <span class="status-badge">
+            Script üzerinden
+          </span>
+
+        </div>
+
+
+        <div class="setting-row">
+
+          <div>
+
+            <strong>
+              Veri sistemi
+            </strong>
+
+            <p>
+              Şu anda demo olarak
+              localStorage kullanılmaktadır.
+            </p>
+
+          </div>
+
+
+          <span class="status-badge warning">
+            Demo
+          </span>
+
+        </div>
+
+
+        <div class="setting-row">
+
+          <div>
+
+            <strong>
+              Güvenlik
+            </strong>
+
+            <p>
+              Gerçek yayında Firebase/Supabase
+              veya özel backend kullanılmalıdır.
+            </p>
+
+          </div>
+
+
+          <span class="status-badge warning">
+            Geliştirilecek
+          </span>
+
+        </div>
+
+
+        <div class="danger-zone">
+
+          <h3>
+            Demo verilerini temizle
+          </h3>
+
+          <p>
+            Bu işlem rezervasyon ve mesajları
+            bu cihazdan siler.
+          </p>
+
+
+          <button
+            id="clearData"
+            class="danger-button">
+
+            Tüm Demo Verilerini Sil
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+  </main>
+
+</section>
+
+
+
+<script src="admin.js"></script>
+
+</body>
+
+</html>
