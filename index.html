@@ -3,815 +3,1070 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Yılmaz Çalışkan Turizm - Otel, tatil ve tur seçenekleri.">
+  <meta name="theme-color" content="#0b3d91">
 
-  <title>Yılmaz Çalışkan Turizm | Tatil ve Seyahat</title>
-  <meta name="description" content="Yılmaz Çalışkan Turizm - Otel, tatil ve tur seçeneklerini keşfedin.">
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>Yılmaz Çalışkan Turizm</title>
 
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<header class="header">
-  <div class="container nav">
+  <!-- =========================
+       HEADER
+  ========================== -->
 
-    <a href="#home" class="logo">
-      <span class="logo-icon">YC</span>
+  <header class="site-header">
 
-      <span>
-        <strong>YILMAZ ÇALIŞKAN</strong>
-        <small>TURİZM</small>
-      </span>
-    </a>
+    <div class="container header-inner">
 
-    <button class="menu-btn" id="menuBtn">☰</button>
+      <a href="#home" class="logo">
+        <span class="logo-mark">YC</span>
 
-    <nav id="navMenu">
-      <a href="#home">Ana Sayfa</a>
-      <a href="#hotels">Oteller</a>
-      <a href="#tours">Turlar</a>
-      <a href="#destinations">Destinasyonlar</a>
-      <a href="#about">Hakkımızda</a>
-      <a href="#contact">İletişim</a>
-
-      <button class="favorites-btn" id="favoritesBtn">
-        ♡ Favoriler
-        <span id="favoriteCount">0</span>
-      </button>
-    </nav>
-
-  </div>
-</header>
-
-
-<main>
-
-<section class="hero" id="home">
-
-  <div class="hero-overlay"></div>
-
-  <div class="container hero-content">
-
-    <span class="eyebrow">YILMAZ ÇALIŞKAN TURİZM</span>
-
-    <h1>
-      Hayalindeki tatili
-      <span>gerçeğe dönüştür.</span>
-    </h1>
-
-    <p>
-      Otel, tatil ve tur seçeneklerini keşfet.
-      Bir sonraki yolculuğunu bugün planla.
-    </p>
-
-
-    <form class="search-box" id="searchForm">
-
-      <div class="search-item">
-        <label>Nereye?</label>
-
-        <select id="destination">
-          <option value="all">Tüm destinasyonlar</option>
-          <option value="antalya">Antalya</option>
-          <option value="bodrum">Bodrum</option>
-          <option value="cesme">Çeşme</option>
-          <option value="kapadokya">Kapadokya</option>
-          <option value="istanbul">İstanbul</option>
-        </select>
-      </div>
-
-
-      <div class="search-item">
-        <label>Giriş</label>
-        <input type="date" id="checkin" required>
-      </div>
-
-
-      <div class="search-item">
-        <label>Çıkış</label>
-        <input type="date" id="checkout" required>
-      </div>
-
-
-      <div class="search-item">
-        <label>Misafir</label>
-
-        <select id="guests">
-          <option>1 kişi</option>
-          <option selected>2 kişi</option>
-          <option>3 kişi</option>
-          <option>4 kişi</option>
-          <option>5 kişi</option>
-          <option>6+ kişi</option>
-        </select>
-      </div>
-
-
-      <button class="search-button" type="submit">
-        🔎 Ara
-      </button>
-
-    </form>
-
-  </div>
-
-</section>
-
-
-<section class="trust">
-
-  <div class="container trust-grid">
-
-    <div>
-      ✓
-      <span>Güvenli rezervasyon deneyimi</span>
-    </div>
-
-    <div>
-      ✓
-      <span>Seçili konaklama seçenekleri</span>
-    </div>
-
-    <div>
-      ✓
-      <span>7/24 iletişim desteği</span>
-    </div>
-
-    <div>
-      ✓
-      <span>Şeffaf bilgi</span>
-    </div>
-
-  </div>
-
-</section>
-
-
-<section class="section" id="hotels">
-
-  <div class="container">
-
-    <div class="section-title">
-
-      <div>
-        <span class="eyebrow blue">KONAKLAMA</span>
-
-        <h2>Öne çıkan oteller</h2>
-
-        <p>
-          Farklı tatil tarzlarına uygun seçili konaklama seçenekleri.
-        </p>
-      </div>
-
-      <button class="outline-btn" id="showAll">
-        Tümünü Gör
-      </button>
-
-    </div>
-
-
-    <div class="filters">
-
-      <button class="filter active" data-filter="all">
-        Tümü
-      </button>
-
-      <button class="filter" data-filter="antalya">
-        Antalya
-      </button>
-
-      <button class="filter" data-filter="bodrum">
-        Bodrum
-      </button>
-
-      <button class="filter" data-filter="cesme">
-        Çeşme
-      </button>
-
-      <button class="filter" data-filter="kapadokya">
-        Kapadokya
-      </button>
-
-    </div>
-
-
-    <div class="hotel-grid" id="hotelGrid"></div>
-
-    <div class="empty" id="empty" hidden>
-      Aradığınız kriterlere uygun otel bulunamadı.
-    </div>
-
-  </div>
-
-</section>
-
-
-<section class="promo">
-
-  <div class="container promo-box">
-
-    <div>
-
-      <span class="eyebrow">
-        YILMAZ ÇALIŞKAN TURİZM
-      </span>
-
-      <h2>
-        Tatilini sadece planlama, yaşa.
-      </h2>
-
-      <p>
-        Deniz, doğa, şehir veya keşif...
-        Sana uygun seçenekleri birlikte bulalım.
-      </p>
-
-    </div>
-
-    <a href="#contact" class="main-button">
-      Bize Ulaşın →
-    </a>
-
-  </div>
-
-</section>
-
-
-<section class="section light" id="destinations">
-
-  <div class="container">
-
-    <div class="section-title">
-
-      <div>
-        <span class="eyebrow blue">
-          KEŞFET
-        </span>
-
-        <h2>
-          Popüler destinasyonlar
-        </h2>
-
-        <p>
-          Bir sonraki rotanı seç.
-        </p>
-      </div>
-
-    </div>
-
-
-    <div class="destination-grid">
-
-      <button
-        class="destination-card antalya"
-        data-destination="antalya">
-
-        <span>ANTALYA</span>
-
-        <strong>
-          Akdeniz'in enerjisi
-        </strong>
-
-        <small>
-          Deniz • Güneş • Resort
-        </small>
-
-      </button>
-
-
-      <button
-        class="destination-card bodrum"
-        data-destination="bodrum">
-
-        <span>BODRUM</span>
-
-        <strong>
-          Ege'de yaz zamanı
-        </strong>
-
-        <small>
-          Koylar • Marina • Gastronomi
-        </small>
-
-      </button>
-
-
-      <button
-        class="destination-card cesme"
-        data-destination="cesme">
-
-        <span>ÇEŞME</span>
-
-        <strong>
-          Ege'nin incisi
-        </strong>
-
-        <small>
-          Plaj • Alaçatı • Rüzgâr
-        </small>
-
-      </button>
-
-
-      <button
-        class="destination-card cappadocia"
-        data-destination="kapadokya">
-
-        <span>KAPADOKYA</span>
-
-        <strong>
-          Masalsı bir rota
-        </strong>
-
-        <small>
-          Balon • Vadiler • Tarih
-        </small>
-
-      </button>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<section class="section" id="tours">
-
-  <div class="container">
-
-    <div class="section-title">
-
-      <div>
-        <span class="eyebrow blue">
-          TURLAR
-        </span>
-
-        <h2>
-          Yeni yerler keşfet
-        </h2>
-
-        <p>
-          Sana uygun tur fikirlerini incele.
-        </p>
-      </div>
-
-    </div>
-
-
-    <div class="tour-grid">
-
-
-      <article class="tour-card">
-
-        <div class="tour-image istanbul"></div>
-
-        <div class="tour-content">
-
-          <span>ŞEHİR TURU</span>
-
-          <h3>
-            İstanbul Kültür Rotası
-          </h3>
-
-          <p>
-            2 gün • Tarih • Gastronomi
-          </p>
-
-          <button
-            class="text-button tour-detail"
-            data-tour="İstanbul Kültür Rotası">
-
-            Turu incele →
-
-          </button>
-
-        </div>
-
-      </article>
-
-
-      <article class="tour-card">
-
-        <div class="tour-image cappadocia"></div>
-
-        <div class="tour-content">
-
-          <span>DOĞA & KEŞİF</span>
-
-          <h3>
-            Kapadokya Kaçamağı
-          </h3>
-
-          <p>
-            3 gün • Vadiler • Gün doğumu
-          </p>
-
-          <button
-            class="text-button tour-detail"
-            data-tour="Kapadokya Kaçamağı">
-
-            Turu incele →
-
-          </button>
-
-        </div>
-
-      </article>
-
-
-      <article class="tour-card">
-
-        <div class="tour-image aegean"></div>
-
-        <div class="tour-content">
-
-          <span>DENİZ & TATİL</span>
-
-          <h3>
-            Ege Koyları
-          </h3>
-
-          <p>
-            4 gün • Tekne • Plaj
-          </p>
-
-          <button
-            class="text-button tour-detail"
-            data-tour="Ege Koyları">
-
-            Turu incele →
-
-          </button>
-
-        </div>
-
-      </article>
-
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<section class="section about" id="about">
-
-  <div class="container about-grid">
-
-    <div class="about-card">
-
-      <span class="logo-icon big">
-        YC
-      </span>
-
-      <span class="eyebrow blue">
-        MARKA HİKÂYESİ
-      </span>
-
-      <h2>
-        Yılmaz Çalışkan Turizm
-      </h2>
-
-      <p>
-        Yılmaz Çalışkan tarafından kurulan yeni nesil
-        turizm markası; konaklama, tatil ve seyahat
-        deneyimini sade, anlaşılır ve güven odaklı
-        şekilde sunmayı amaçlar.
-      </p>
-
-      <p>
-        Misafirlerimizin seyahat planlarını kolaylaştırmak
-        ve farklı tatil seçeneklerini tek noktada
-        buluşturmak için çalışıyoruz.
-      </p>
-
-    </div>
-
-
-    <div class="stats">
-
-      <div>
-        <strong>5+</strong>
-        <span>Destinasyon</span>
-      </div>
-
-      <div>
-        <strong>10+</strong>
-        <span>Konaklama seçeneği</span>
-      </div>
-
-      <div>
-        <strong>7/24</strong>
-        <span>İletişim</span>
-      </div>
-
-      <div>
-        <strong>1</strong>
-        <span>Yeni marka</span>
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<section class="section faq-section">
-
-  <div class="container faq-grid">
-
-    <div>
-
-      <span class="eyebrow blue">
-        MERAK EDİLENLER
-      </span>
-
-      <h2>
-        Sıkça sorulan sorular
-      </h2>
-
-    </div>
-
-
-    <div class="faq">
-
-      <details>
-        <summary>
-          Rezervasyon nasıl yapılır?
-        </summary>
-
-        <p>
-          Otel veya tur seçiminizi yaptıktan sonra
-          rezervasyon formunu doldurabilirsiniz.
-          Talebiniz iletişim bilgileriniz üzerinden
-          değerlendirilir.
-        </p>
-      </details>
-
-
-      <details>
-        <summary>
-          Fiyatlar gerçek zamanlı mı?
-        </summary>
-
-        <p>
-          Bu sürümdeki fiyatlar demo verileridir.
-          Gerçek zamanlı fiyat ve müsaitlik için
-          otel/rezervasyon API bağlantısı gerekir.
-        </p>
-      </details>
-
-
-      <details>
-        <summary>
-          İptal ve değişiklik yapabilir miyim?
-        </summary>
-
-        <p>
-          İptal ve değişiklik koşulları seçilen
-          tesis ve hizmete göre değişebilir.
-        </p>
-      </details>
-
-
-      <details>
-        <summary>
-          Destek alabilir miyim?
-        </summary>
-
-        <p>
-          İletişim bölümündeki telefon, e-posta
-          veya WhatsApp üzerinden bize ulaşabilirsiniz.
-        </p>
-      </details>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<section class="section contact" id="contact">
-
-  <div class="container contact-grid">
-
-    <div>
-
-      <span class="eyebrow">
-        İLETİŞİM
-      </span>
-
-      <h2>
-        Tatilini birlikte planlayalım.
-      </h2>
-
-      <p>
-        Rezervasyon, tur veya genel bilgi için
-        bize ulaşabilirsiniz.
-      </p>
-
-
-      <div class="contact-list">
-
-        <a href="tel:+905000000000">
-          📞
-          <span>
-            <small>Telefon</small>
-            <strong>+90 500 000 00 00</strong>
-          </span>
-        </a>
-
-
-        <a href="mailto:info@yilmazcaliskanturizm.com">
-          ✉️
-          <span>
-            <small>E-posta</small>
-            <strong>
-              info@yilmazcaliskanturizm.com
-            </strong>
-          </span>
-        </a>
-
-
-        <a
-          href="https://wa.me/905000000000"
-          target="_blank">
-
-          💬
-
-          <span>
-            <small>WhatsApp</small>
-            <strong>
-              WhatsApp'tan yaz
-            </strong>
-          </span>
-
-        </a>
-
-      </div>
-
-    </div>
-
-
-    <form class="contact-form" id="contactForm">
-
-      <h3>
-        Bilgi talep et
-      </h3>
-
-      <label>
-        Ad Soyad
-
-        <input
-          id="contactName"
-          required
-          placeholder="Adınız Soyadınız">
-      </label>
-
-
-      <label>
-        E-posta
-
-        <input
-          id="contactEmail"
-          type="email"
-          required
-          placeholder="ornek@mail.com">
-      </label>
-
-
-      <label>
-        Mesaj
-
-        <textarea
-          id="contactMessage"
-          rows="5"
-          required
-          placeholder="Size nasıl yardımcı olabiliriz?"></textarea>
-
-      </label>
-
-
-      <button class="main-button" type="submit">
-        Mesajı Gönder
-      </button>
-
-      <small class="form-note">
-        Demo formudur. Gerçek e-posta gönderimi için
-        backend veya form servisi bağlanmalıdır.
-      </small>
-
-    </form>
-
-  </div>
-
-</section>
-
-</main>
-
-
-<footer>
-
-  <div class="container footer-grid">
-
-    <div>
-
-      <a class="logo" href="#home">
-
-        <span class="logo-icon">
-          YC
-        </span>
-
-        <span>
+        <span class="logo-text">
           <strong>YILMAZ ÇALIŞKAN</strong>
           <small>TURİZM</small>
         </span>
-
       </a>
 
-      <p>
-        Tatil ve seyahat deneyimini
-        daha kolay planlamanız için.
-      </p>
 
-    </div>
+      <button
+        id="menuBtn"
+        class="menu-btn"
+        type="button"
+        aria-label="Menüyü aç">
 
+        ☰
 
-    <div>
-
-      <h4>Keşfet</h4>
-
-      <a href="#hotels">Oteller</a>
-      <a href="#tours">Turlar</a>
-      <a href="#destinations">Destinasyonlar</a>
-
-    </div>
-
-
-    <div>
-
-      <h4>Kurumsal</h4>
-
-      <a href="#about">Hakkımızda</a>
-      <a href="#contact">İletişim</a>
-
-      <button id="privacy">
-        Gizlilik
       </button>
 
+
+      <nav id="navMenu" class="nav-menu">
+
+        <a href="#home">
+          Ana Sayfa
+        </a>
+
+        <a href="#hotels">
+          Oteller
+        </a>
+
+        <a href="#tours">
+          Turlar
+        </a>
+
+        <a href="#destinations">
+          Destinasyonlar
+        </a>
+
+        <a href="#contact">
+          İletişim
+        </a>
+
+        <button
+          id="favoritesBtn"
+          class="favorite-nav"
+          type="button">
+
+          ♥ Favoriler
+
+          <span id="favoriteCount">
+            0
+          </span>
+
+        </button>
+
+      </nav>
+
+    </div>
+
+  </header>
+
+
+  <!-- =========================
+       HERO
+  ========================== -->
+
+  <main>
+
+    <section id="home" class="hero">
+
+      <div class="hero-overlay"></div>
+
+      <div class="container hero-content">
+
+        <span class="eyebrow">
+          YILMAZ ÇALIŞKAN TURİZM
+        </span>
+
+        <h1>
+          Hayalinizdeki
+          <span>tatil</span>
+          burada başlıyor.
+        </h1>
+
+        <p>
+          Türkiye'nin en özel destinasyonlarını,
+          otellerini ve tur seçeneklerini keşfedin.
+        </p>
+
+
+        <!-- =========================
+             SEARCH
+        ========================== -->
+
+        <form id="searchForm" class="search-box">
+
+          <div class="search-field">
+
+            <label for="destination">
+              Destinasyon
+            </label>
+
+            <select id="destination">
+
+              <option value="all">
+                Tüm destinasyonlar
+              </option>
+
+              <option value="antalya">
+                Antalya
+              </option>
+
+              <option value="bodrum">
+                Bodrum
+              </option>
+
+              <option value="cesme">
+                Çeşme
+              </option>
+
+              <option value="kapadokya">
+                Kapadokya
+              </option>
+
+              <option value="istanbul">
+                İstanbul
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="search-field">
+
+            <label for="checkin">
+              Giriş
+            </label>
+
+            <input
+              id="checkin"
+              type="date"
+              required>
+
+          </div>
+
+
+          <div class="search-field">
+
+            <label for="checkout">
+              Çıkış
+            </label>
+
+            <input
+              id="checkout"
+              type="date"
+              required>
+
+          </div>
+
+
+          <button
+            class="search-button"
+            type="submit">
+
+            🔎 Ara
+
+          </button>
+
+        </form>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         QUICK DESTINATIONS
+    ========================== -->
+
+    <section
+      id="destinations"
+      class="section destinations-section">
+
+      <div class="container">
+
+        <div class="section-heading">
+
+          <div>
+
+            <span class="eyebrow blue">
+              KEŞFET
+            </span>
+
+            <h2>
+              Popüler destinasyonlar
+            </h2>
+
+          </div>
+
+          <button
+            id="showAll"
+            class="text-button"
+            type="button">
+
+            Tümünü gör →
+
+          </button>
+
+        </div>
+
+
+        <div class="destination-grid">
+
+
+          <article
+            class="destination-card"
+            data-destination="antalya">
+
+            <div
+              class="destination-image"
+              style="background-image:url('https://images.unsplash.com/photo-1601581875309-fafbf2d3ed3a?auto=format&fit=crop&w=1000&q=85')">
+
+            </div>
+
+            <div class="destination-info">
+
+              <span>
+                Akdeniz
+              </span>
+
+              <h3>
+                Antalya
+              </h3>
+
+              <p>
+                Deniz, güneş ve unutulmaz tatil.
+              </p>
+
+            </div>
+
+          </article>
+
+
+          <article
+            class="destination-card"
+            data-destination="bodrum">
+
+            <div
+              class="destination-image"
+              style="background-image:url('https://images.unsplash.com/photo-1602002418082-a4443e081dd1?auto=format&fit=crop&w=1000&q=85')">
+
+            </div>
+
+            <div class="destination-info">
+
+              <span>
+                Ege
+              </span>
+
+              <h3>
+                Bodrum
+              </h3>
+
+              <p>
+                Mavi koylar ve Ege atmosferi.
+              </p>
+
+            </div>
+
+          </article>
+
+
+          <article
+            class="destination-card"
+            data-destination="cesme">
+
+            <div
+              class="destination-image"
+              style="background-image:url('https://images.unsplash.com/photo-1533104816931-20fa691ff6ca?auto=format&fit=crop&w=1000&q=85')">
+
+            </div>
+
+            <div class="destination-info">
+
+              <span>
+                Ege
+              </span>
+
+              <h3>
+                Çeşme
+              </h3>
+
+              <p>
+                Alaçatı sokakları ve masmavi deniz.
+              </p>
+
+            </div>
+
+          </article>
+
+
+          <article
+            class="destination-card"
+            data-destination="kapadokya">
+
+            <div
+              class="destination-image"
+              style="background-image:url('https://images.unsplash.com/photo-1641128324972-af3212f0f6bd?auto=format&fit=crop&w=1000&q=85')">
+
+            </div>
+
+            <div class="destination-info">
+
+              <span>
+                İç Anadolu
+              </span>
+
+              <h3>
+                Kapadokya
+              </h3>
+
+              <p>
+                Peri bacaları ve eşsiz manzaralar.
+              </p>
+
+            </div>
+
+          </article>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         HOTELS
+    ========================== -->
+
+    <section
+      id="hotels"
+      class="section hotels-section">
+
+      <div class="container">
+
+        <div class="section-heading">
+
+          <div>
+
+            <span class="eyebrow blue">
+              KONAKLAMA
+            </span>
+
+            <h2>
+              Öne çıkan oteller
+            </h2>
+
+            <p>
+              Size uygun konaklama seçeneklerini keşfedin.
+            </p>
+
+          </div>
+
+
+          <div class="filter-row">
+
+            <button
+              class="filter active"
+              data-filter="all"
+              type="button">
+
+              Tümü
+
+            </button>
+
+            <button
+              class="filter"
+              data-filter="antalya"
+              type="button">
+
+              Antalya
+
+            </button>
+
+            <button
+              class="filter"
+              data-filter="bodrum"
+              type="button">
+
+              Bodrum
+
+            </button>
+
+            <button
+              class="filter"
+              data-filter="cesme"
+              type="button">
+
+              Çeşme
+
+            </button>
+
+            <button
+              class="filter"
+              data-filter="kapadokya"
+              type="button">
+
+              Kapadokya
+
+            </button>
+
+            <button
+              class="filter"
+              data-filter="istanbul"
+              type="button">
+
+              İstanbul
+
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <div
+          id="hotelGrid"
+          class="hotel-grid">
+
+        </div>
+
+
+        <div
+          id="empty"
+          class="empty-state"
+          hidden>
+
+          <div class="empty-icon">
+            🏨
+          </div>
+
+          <h3>
+            Otel bulunamadı
+          </h3>
+
+          <p>
+            Seçtiğiniz kriterlere uygun otel bulunamadı.
+          </p>
+
+          <button
+            class="main-button"
+            type="button"
+            onclick="applyFilter('all')">
+
+            Tüm otelleri göster
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         TOURS
+    ========================== -->
+
+    <section
+      id="tours"
+      class="section tours-section">
+
+      <div class="container">
+
+        <div class="section-heading">
+
+          <div>
+
+            <span class="eyebrow blue">
+              TUR PROGRAMLARI
+            </span>
+
+            <h2>
+              Özel tur seçenekleri
+            </h2>
+
+            <p>
+              Yeni yerler keşfetmek için size uygun
+              tur programını seçin.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="tour-grid">
+
+
+          <article class="tour-card">
+
+            <div
+              class="tour-image"
+              style="background-image:url('https://images.unsplash.com/photo-1561715276-a2d087060f1d?auto=format&fit=crop&w=1000&q=85')">
+
+              <span class="tour-badge">
+                POPÜLER
+              </span>
+
+            </div>
+
+            <div class="tour-content">
+
+              <span class="tour-location">
+                Kapadokya
+              </span>
+
+              <h3>
+                Kapadokya Keşif Turu
+              </h3>
+
+              <p>
+                Göreme, Avanos, Uçhisar ve
+                bölgenin eşsiz vadilerini keşfedin.
+              </p>
+
+              <button
+                class="tour-detail small-button primary"
+                data-tour="Kapadokya Keşif Turu"
+                type="button">
+
+                Tur detayları
+
+              </button>
+
+            </div>
+
+          </article>
+
+
+          <article class="tour-card">
+
+            <div
+              class="tour-image"
+              style="background-image:url('https://images.unsplash.com/photo-1601581875309-fafbf2d3ed3a?auto=format&fit=crop&w=1000&q=85')">
+
+              <span class="tour-badge">
+                YAZ
+              </span>
+
+            </div>
+
+            <div class="tour-content">
+
+              <span class="tour-location">
+                Antalya
+              </span>
+
+              <h3>
+                Antalya Akdeniz Turu
+              </h3>
+
+              <p>
+                Akdeniz kıyıları, plajlar ve
+                bölgenin popüler tatil noktaları.
+              </p>
+
+              <button
+                class="tour-detail small-button primary"
+                data-tour="Antalya Akdeniz Turu"
+                type="button">
+
+                Tur detayları
+
+              </button>
+
+            </div>
+
+          </article>
+
+
+          <article class="tour-card">
+
+            <div
+              class="tour-image"
+              style="background-image:url('https://images.unsplash.com/photo-1602002418082-a4443e081dd1?auto=format&fit=crop&w=1000&q=85')">
+
+              <span class="tour-badge">
+                EGE
+              </span>
+
+            </div>
+
+            <div class="tour-content">
+
+              <span class="tour-location">
+                Bodrum
+              </span>
+
+              <h3>
+                Bodrum & Ege Turu
+              </h3>
+
+              <p>
+                Ege'nin koylarını ve Bodrum'un
+                özel noktalarını keşfedin.
+              </p>
+
+              <button
+                class="tour-detail small-button primary"
+                data-tour="Bodrum & Ege Turu"
+                type="button">
+
+                Tur detayları
+
+              </button>
+
+            </div>
+
+          </article>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         WHY US
+    ========================== -->
+
+    <section class="section advantages-section">
+
+      <div class="container">
+
+        <div class="section-heading centered">
+
+          <span class="eyebrow blue">
+            NEDEN BİZ?
+          </span>
+
+          <h2>
+            Tatilinizi birlikte planlayalım
+          </h2>
+
+        </div>
+
+
+        <div class="advantage-grid">
+
+          <div class="advantage">
+
+            <div class="advantage-icon">
+              🏨
+            </div>
+
+            <h3>
+              Konaklama seçenekleri
+            </h3>
+
+            <p>
+              Farklı bütçe ve tatil planlarına
+              uygun konaklama seçenekleri.
+            </p>
+
+          </div>
+
+
+          <div class="advantage">
+
+            <div class="advantage-icon">
+              🧳
+            </div>
+
+            <h3>
+              Tur planlaması
+            </h3>
+
+            <p>
+              Tatilinize uygun program konusunda
+              destek ve danışmanlık.
+            </p>
+
+          </div>
+
+
+          <div class="advantage">
+
+            <div class="advantage-icon">
+              📞
+            </div>
+
+            <h3>
+              İletişim desteği
+            </h3>
+
+            <p>
+              Rezervasyon ve seyahat planınız
+              hakkında bizimle iletişime geçebilirsiniz.
+            </p>
+
+          </div>
+
+
+          <div class="advantage">
+
+            <div class="advantage-icon">
+              🔒
+            </div>
+
+            <h3>
+              Güvenli iletişim
+            </h3>
+
+            <p>
+              Bilgilerinizin korunması için
+              gerekli teknik önlemleri hedefliyoruz.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         CONTACT
+    ========================== -->
+
+    <section
+      id="contact"
+      class="section contact-section">
+
+      <div class="container contact-grid">
+
+
+        <div class="contact-info">
+
+          <span class="eyebrow blue">
+            İLETİŞİM
+          </span>
+
+          <h2>
+            Tatilinizi birlikte planlayalım.
+          </h2>
+
+          <p>
+            Otel, tur veya seyahat planınız
+            hakkında bilgi almak için bize ulaşabilirsiniz.
+          </p>
+
+
+          <div class="contact-item">
+
+            <span class="contact-icon">
+              📞
+            </span>
+
+            <div>
+
+              <strong>
+                Telefon
+              </strong>
+
+              <p>
+                Yakında eklenecek
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="contact-item">
+
+            <span class="contact-icon">
+              💬
+            </span>
+
+            <div>
+
+              <strong>
+                WhatsApp
+              </strong>
+
+              <p>
+                Rezervasyon ve bilgi
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="contact-item">
+
+            <span class="contact-icon">
+              ✉️
+            </span>
+
+            <div>
+
+              <strong>
+                E-posta
+              </strong>
+
+              <p>
+                Yakında eklenecek
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <form
+          id="contactForm"
+          class="contact-form">
+
+          <h3>
+            Bize yazın
+          </h3>
+
+
+          <label for="contactName">
+            Ad Soyad
+          </label>
+
+          <input
+            id="contactName"
+            type="text"
+            required
+            placeholder="Adınız Soyadınız">
+
+
+          <label for="contactEmail">
+            E-posta
+          </label>
+
+          <input
+            id="contactEmail"
+            type="email"
+            required
+            placeholder="ornek@mail.com">
+
+
+          <label for="contactMessage">
+            Mesajınız
+          </label>
+
+          <textarea
+            id="contactMessage"
+            rows="6"
+            required
+            placeholder="Size nasıl yardımcı olabiliriz?"></textarea>
+
+
+          <button
+            class="main-button"
+            type="submit">
+
+            Mesaj gönder
+
+          </button>
+
+        </form>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- =========================
+       FOOTER
+  ========================== -->
+
+  <footer class="site-footer">
+
+    <div class="container footer-grid">
+
+
+      <div>
+
+        <div class="footer-logo">
+          YC
+        </div>
+
+        <h3>
+          Yılmaz Çalışkan Turizm
+        </h3>
+
+        <p>
+          Tatil, konaklama ve tur
+          planlamanız için.
+        </p>
+
+      </div>
+
+
+      <div>
+
+        <h4>
+          Menü
+        </h4>
+
+        <a href="#home">
+          Ana Sayfa
+        </a>
+
+        <a href="#hotels">
+          Oteller
+        </a>
+
+        <a href="#tours">
+          Turlar
+        </a>
+
+        <a href="#contact">
+          İletişim
+        </a>
+
+      </div>
+
+
+      <div>
+
+        <h4>
+          Yasal
+        </h4>
+
+        <button
+          id="privacy"
+          type="button">
+
+          Gizlilik
+
+        </button>
+
+        <a href="kvkk.html">
+          KVKK
+        </a>
+
+        <a href="cookies.html">
+          Çerez Politikası
+        </a>
+
+      </div>
+
+
+      <div>
+
+        <h4>
+          Yılmaz Çalışkan Turizm
+        </h4>
+
+        <p>
+          Seyahatinizi planlayın,
+          yeni yerler keşfedin.
+        </p>
+
+      </div>
+
     </div>
 
 
-    <div>
+    <div class="footer-bottom">
 
-      <h4>
-        Yılmaz Çalışkan
-      </h4>
+      <div class="container">
 
-      <p>
-        Turizm hizmetleri
-      </p>
-
-      <p>
         © <span id="year"></span>
+        Yılmaz Çalışkan Turizm.
         Tüm hakları saklıdır.
-      </p>
+
+      </div>
+
+    </div>
+
+  </footer>
+
+
+  <!-- =========================
+       MODAL
+  ========================== -->
+
+  <div
+    id="modal"
+    class="modal"
+    aria-hidden="true">
+
+    <div class="modal-bg"></div>
+
+
+    <div
+      class="modal-box"
+      role="dialog"
+      aria-modal="true">
+
+      <button
+        id="modalClose"
+        class="modal-close"
+        type="button"
+        aria-label="Kapat">
+
+        ×
+
+      </button>
+
+
+      <div id="modalContent">
+
+      </div>
 
     </div>
 
   </div>
 
-</footer>
 
+  <!-- =========================
+       TOAST
+  ========================== -->
 
-<div class="modal" id="modal">
-
-  <div class="modal-bg"></div>
-
-  <div class="modal-box">
-
-    <button class="modal-close" id="modalClose">
-      ×
-    </button>
-
-    <div id="modalContent"></div>
+  <div
+    id="toast"
+    class="toast"
+    role="status">
 
   </div>
 
-</div>
 
+  <!-- =========================
+       SCRIPT
+  ========================== -->
 
-<div class="toast" id="toast"></div>
-
-
-<script src="script.js"></script>
+  <script src="script.js"></script>
 
 </body>
-    </html>
+</html>
