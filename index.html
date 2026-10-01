@@ -2,12 +2,12 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Yılmaz Çalışkan Turizm | Otel & Tatil Rezervasyonu</title>
+<title>Yılmaz Çalışkan Turizm | Otel ve Tatil</title>
 
-<meta name="description"
-content="Yılmaz Çalışkan Turizm ile otel, tatil ve konaklama seçeneklerini keşfedin.">
+<meta name="description" content="Yılmaz Çalışkan Turizm ile Türkiye'nin en güzel destinasyonlarında otel ve konaklama seçeneklerini keşfedin.">
+<meta name="theme-color" content="#0b1220">
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -15,216 +15,228 @@ content="Yılmaz Çalışkan Turizm ile otel, tatil ve konaklama seçeneklerini 
 *{
   box-sizing:border-box;
   margin:0;
-  padding:0
+  padding:0;
 }
 
 :root{
-  --dark:#07111f;
-  --dark2:#0c1b2d;
-  --blue:#1769ff;
-  --blue2:#0d4fd7;
-  --gold:#f5b942;
-  --white:#fff;
+  --primary:#0b63ce;
+  --primary-dark:#084a9b;
+  --accent:#ffb400;
+  --dark:#101828;
+  --text:#182230;
   --muted:#667085;
-  --bg:#f5f7fa;
-  --border:#e6e9ef;
-  --green:#16a34a;
-  --red:#dc2626;
-}
-
-html{
-  scroll-behavior:smooth
+  --light:#f5f7fa;
+  --white:#fff;
+  --border:#e4e7ec;
+  --success:#12b76a;
+  --danger:#f04438;
+  --shadow:0 12px 35px rgba(16,24,40,.10);
+  --radius:18px;
 }
 
 body{
   font-family:Arial,Helvetica,sans-serif;
-  background:var(--bg);
-  color:#101828;
-  line-height:1.5
+  background:var(--light);
+  color:var(--text);
+  line-height:1.5;
 }
 
-button,input,select{
-  font:inherit
+body.dark{
+  --light:#0b1220;
+  --white:#111827;
+  --text:#f5f7fa;
+  --dark:#fff;
+  --muted:#98a2b3;
+  --border:#273244;
+  background:#0b1220;
+}
+
+button,
+input,
+select,
+textarea{
+  font:inherit;
 }
 
 button{
-  cursor:pointer
+  cursor:pointer;
 }
 
 a{
+  color:inherit;
   text-decoration:none;
-  color:inherit
-}
-
-.container{
-  width:min(1180px,92%);
-  margin:auto
 }
 
 /* HEADER */
 
 header{
-  background:#fff;
   position:sticky;
   top:0;
   z-index:1000;
-  border-bottom:1px solid var(--border)
+  background:rgba(255,255,255,.96);
+  backdrop-filter:blur(15px);
+  border-bottom:1px solid var(--border);
 }
 
-.nav{
+body.dark header{
+  background:rgba(17,24,39,.96);
+}
+
+.navbar{
+  max-width:1250px;
+  margin:auto;
   min-height:72px;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:20px
+  padding:0 20px;
 }
 
 .logo{
-  font-size:21px;
-  font-weight:900;
-  color:var(--dark)
-}
-
-.logo span{
-  color:var(--blue)
-}
-
-.navlinks{
   display:flex;
-  gap:24px;
-  align-items:center
+  align-items:center;
+  gap:10px;
+  font-weight:800;
+  font-size:20px;
+  color:var(--primary);
 }
 
-.navlinks a{
-  font-weight:600;
-  font-size:14px
-}
-
-.navlinks a:hover{
-  color:var(--blue)
+.logo-icon{
+  width:42px;
+  height:42px;
+  border-radius:12px;
+  display:grid;
+  place-items:center;
+  background:var(--primary);
+  color:white;
 }
 
 .nav-actions{
   display:flex;
   align-items:center;
-  gap:8px
+  gap:10px;
 }
 
 .icon-btn{
+  border:1px solid var(--border);
+  background:var(--white);
+  color:var(--text);
   width:42px;
   height:42px;
-  border:1px solid var(--border);
-  background:#fff;
-  border-radius:10px
+  border-radius:12px;
+  display:grid;
+  place-items:center;
+  font-size:19px;
 }
 
-.mobile-menu{
-  display:none
+.menu-btn{
+  display:none;
 }
 
 /* HERO */
 
 .hero{
-  min-height:560px;
+  min-height:500px;
+  padding:90px 20px 120px;
+  color:white;
   background:
-    linear-gradient(90deg,rgba(3,13,25,.88),rgba(3,13,25,.35)),
-    url("https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1800&q=85")
+    linear-gradient(rgba(4,18,38,.62),rgba(4,18,38,.68)),
+    url("https://images.unsplash.com/photo-1530789253388-582c481c54b0?auto=format&fit=crop&w=1800&q=85")
     center/cover;
-  display:flex;
-  align-items:center
 }
 
-.hero-content{
-  color:#fff;
-  max-width:760px;
-  padding:70px 0
+.hero-inner{
+  max-width:1200px;
+  margin:auto;
 }
 
 .hero h1{
-  font-size:clamp(36px,6vw,64px);
+  font-size:clamp(34px,6vw,64px);
+  max-width:750px;
   line-height:1.05;
-  margin-bottom:20px
+  margin-bottom:20px;
 }
 
 .hero p{
-  font-size:19px;
-  color:#e7edf5;
-  max-width:650px;
-  margin-bottom:30px
+  font-size:18px;
+  max-width:700px;
+  opacity:.95;
+  margin-bottom:35px;
 }
+
+/* SEARCH */
 
 .search-box{
-  background:#fff;
-  color:#111;
-  border-radius:18px;
-  padding:18px;
-  box-shadow:0 20px 60px rgba(0,0,0,.25)
-}
-
-.search-grid{
+  background:white;
+  color:var(--text);
+  border-radius:20px;
+  padding:12px;
   display:grid;
-  grid-template-columns:1.5fr 1fr 1fr 1fr auto;
-  gap:10px
+  grid-template-columns:1.4fr 1fr 1fr 1fr auto;
+  gap:8px;
+  max-width:1150px;
+  box-shadow:0 20px 60px rgba(0,0,0,.22);
 }
 
-.field{
-  border:1px solid var(--border);
-  border-radius:11px;
-  padding:10px 12px;
-  background:#fff
+.search-field{
+  padding:12px 14px;
+  border-right:1px solid #e4e7ec;
 }
 
-.field label{
+.search-field label{
   display:block;
   font-size:11px;
+  font-weight:800;
   color:#667085;
-  font-weight:700;
-  margin-bottom:4px
+  margin-bottom:5px;
 }
 
-.field input,
-.field select{
+.search-field input,
+.search-field select{
   width:100%;
   border:0;
   outline:0;
-  background:transparent;
-  color:#111;
-  font-weight:600
+  background:white;
+  color:#101828;
+  font-weight:600;
 }
 
 .search-btn{
   border:0;
-  border-radius:11px;
-  background:var(--blue);
-  color:#fff;
+  background:var(--primary);
+  color:white;
+  border-radius:14px;
+  padding:0 25px;
   font-weight:800;
-  padding:0 24px
+  min-height:58px;
 }
 
 .search-btn:hover{
-  background:var(--blue2)
+  background:var(--primary-dark);
 }
 
-/* SECTION */
+/* CONTAINER */
 
-section{
-  padding:70px 0
+.container{
+  max-width:1200px;
+  margin:auto;
+  padding:65px 20px;
 }
 
-.section-head{
+.section-title{
   display:flex;
-  align-items:end;
   justify-content:space-between;
+  align-items:end;
   gap:20px;
-  margin-bottom:28px
+  margin-bottom:25px;
 }
 
-.section-head h2{
-  font-size:32px
+.section-title h2{
+  font-size:30px;
 }
 
-.section-head p{
-  color:var(--muted)
+.section-title p{
+  color:var(--muted);
 }
 
 /* DESTINATIONS */
@@ -232,215 +244,242 @@ section{
 .destinations{
   display:grid;
   grid-template-columns:repeat(4,1fr);
-  gap:16px
+  gap:18px;
 }
 
 .destination{
   height:220px;
-  border-radius:18px;
+  border-radius:20px;
   overflow:hidden;
   position:relative;
-  cursor:pointer
+  color:white;
+  cursor:pointer;
+  box-shadow:var(--shadow);
 }
 
 .destination img{
   width:100%;
   height:100%;
   object-fit:cover;
-  transition:.3s
+  transition:.4s;
 }
 
 .destination:hover img{
-  transform:scale(1.06)
+  transform:scale(1.07);
 }
 
 .destination-overlay{
   position:absolute;
   inset:0;
-  background:linear-gradient(transparent,rgba(0,0,0,.8));
   display:flex;
   align-items:end;
+  padding:22px;
+  background:linear-gradient(transparent,rgba(0,0,0,.8));
+}
+
+.destination h3{
+  font-size:24px;
+}
+
+/* FILTER */
+
+.filter-panel{
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
   padding:20px;
-  color:#fff
+  margin-bottom:30px;
+  box-shadow:var(--shadow);
 }
-
-.destination-overlay h3{
-  font-size:22px
-}
-
-/* FILTERS */
 
 .filters{
-  background:#fff;
-  padding:18px;
-  border-radius:16px;
-  border:1px solid var(--border);
-  margin-bottom:25px
-}
-
-.filter-grid{
   display:grid;
-  grid-template-columns:repeat(5,1fr);
-  gap:12px
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
 }
 
-.filter-box{
-  border:1px solid var(--border);
-  border-radius:10px;
-  padding:10px
-}
-
-.filter-box label{
+.filter label{
   display:block;
   font-size:12px;
+  font-weight:800;
   color:var(--muted);
-  margin-bottom:5px
+  margin-bottom:6px;
 }
 
-.filter-box input,
-.filter-box select{
+.filter input,
+.filter select{
   width:100%;
-  border:0;
-  outline:0
+  padding:12px;
+  border:1px solid var(--border);
+  border-radius:10px;
+  background:var(--white);
+  color:var(--text);
+  outline:none;
 }
 
-.checks{
+.amenities{
   display:flex;
   flex-wrap:wrap;
-  gap:12px;
-  margin-top:15px
+  gap:8px;
+  margin-top:15px;
 }
 
-.checks label{
-  display:flex;
-  gap:6px;
-  align-items:center;
-  font-size:14px;
-  cursor:pointer
+.amenity{
+  border:1px solid var(--border);
+  background:var(--white);
+  color:var(--text);
+  border-radius:999px;
+  padding:9px 14px;
 }
 
-/* HOTEL CARDS */
+.amenity.active{
+  background:#e8f1ff;
+  border-color:var(--primary);
+  color:var(--primary);
+}
 
-.hotels{
+/* HOTELS */
+
+.hotel-grid{
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:20px
+  gap:20px;
 }
 
 .hotel-card{
-  background:#fff;
+  background:var(--white);
+  border:1px solid var(--border);
   border-radius:18px;
   overflow:hidden;
-  border:1px solid var(--border);
-  transition:.2s;
-  position:relative
+  box-shadow:var(--shadow);
+  transition:.25s;
 }
 
 .hotel-card:hover{
-  transform:translateY(-3px);
-  box-shadow:0 15px 40px rgba(0,0,0,.08)
+  transform:translateY(-4px);
 }
 
 .hotel-image{
   height:220px;
-  position:relative
+  position:relative;
+  overflow:hidden;
 }
 
 .hotel-image img{
   width:100%;
   height:100%;
-  object-fit:cover
+  object-fit:cover;
 }
 
 .favorite{
   position:absolute;
   top:12px;
   right:12px;
-  width:40px;
-  height:40px;
+  width:42px;
+  height:42px;
   border:0;
   border-radius:50%;
-  background:#fff;
-  font-size:20px
+  background:white;
+  font-size:20px;
 }
 
-.badge{
+.favorite.active{
+  color:#e11d48;
+}
+
+.discount{
   position:absolute;
-  top:12px;
   left:12px;
-  background:var(--blue);
-  color:#fff;
-  padding:6px 10px;
+  top:12px;
+  background:#e11d48;
+  color:white;
   border-radius:8px;
+  padding:6px 9px;
   font-size:12px;
-  font-weight:800
+  font-weight:800;
 }
 
-.hotel-info{
-  padding:18px
+.hotel-body{
+  padding:18px;
 }
 
 .hotel-location{
   color:var(--muted);
-  font-size:13px
+  font-size:13px;
+  margin-bottom:6px;
 }
 
 .hotel-title{
   font-size:20px;
-  margin:4px 0
+  margin-bottom:8px;
 }
 
-.stars{
-  color:var(--gold);
-  letter-spacing:2px
+.rating{
+  color:#f79009;
+  font-weight:800;
 }
 
 .hotel-features{
   display:flex;
   flex-wrap:wrap;
-  gap:7px;
-  margin:12px 0
+  gap:6px;
+  margin:12px 0;
 }
 
 .feature{
-  background:#f2f4f7;
+  background:var(--light);
   border-radius:7px;
   padding:5px 8px;
-  font-size:11px
+  font-size:12px;
 }
 
-.hotel-bottom{
-  display:flex;
-  justify-content:space-between;
-  align-items:end;
-  gap:10px;
-  margin-top:16px
-}
-
-.price strong{
-  font-size:23px
+.price{
+  font-size:23px;
+  font-weight:900;
 }
 
 .price small{
-  color:var(--muted)
+  font-size:12px;
+  color:var(--muted);
+  font-weight:normal;
 }
 
-.primary{
+.hotel-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-top:15px;
+}
+
+.btn{
   border:0;
-  background:var(--blue);
-  color:#fff;
-  padding:11px 15px;
-  border-radius:9px;
-  font-weight:800
+  border-radius:11px;
+  padding:12px 15px;
+  font-weight:800;
 }
 
-.secondary{
+.btn-primary{
+  background:var(--primary);
+  color:white;
+}
+
+.btn-primary:hover{
+  background:var(--primary-dark);
+}
+
+.btn-secondary{
+  background:var(--light);
+  color:var(--text);
   border:1px solid var(--border);
-  background:#fff;
-  color:#111;
-  padding:11px 15px;
-  border-radius:9px;
-  font-weight:700
+}
+
+.empty{
+  background:var(--white);
+  border:1px dashed var(--border);
+  border-radius:16px;
+  padding:50px 20px;
+  text-align:center;
+  color:var(--muted);
 }
 
 /* CAMPAIGNS */
@@ -448,124 +487,147 @@ section{
 .campaigns{
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:18px
+  gap:20px;
 }
 
 .campaign{
-  background:linear-gradient(135deg,#08182c,#1769ff);
-  color:#fff;
   padding:28px;
-  border-radius:18px;
-  min-height:180px
+  border-radius:20px;
+  background:var(--white);
+  border:1px solid var(--border);
+  box-shadow:var(--shadow);
 }
 
-.campaign:nth-child(2){
-  background:linear-gradient(135deg,#392400,#b87900)
-}
-
-.campaign:nth-child(3){
-  background:linear-gradient(135deg,#092b1a,#16804a)
+.campaign-icon{
+  font-size:40px;
+  margin-bottom:15px;
 }
 
 .campaign h3{
-  font-size:23px;
-  margin:10px 0
+  margin-bottom:8px;
 }
 
-/* FEATURES */
+.campaign p{
+  color:var(--muted);
+}
 
-.features{
+/* WHY */
+
+.why{
   display:grid;
   grid-template-columns:repeat(4,1fr);
-  gap:18px
+  gap:20px;
 }
 
-.feature-box{
-  background:#fff;
+.why-card{
+  background:var(--white);
   border:1px solid var(--border);
-  border-radius:16px;
-  padding:25px
+  border-radius:18px;
+  padding:25px;
 }
 
-.feature-box .emoji{
+.why-icon{
   font-size:32px;
-  margin-bottom:12px
-}
-
-.feature-box h3{
-  margin-bottom:8px
-}
-
-.feature-box p{
-  color:var(--muted);
-  font-size:14px
+  margin-bottom:12px;
 }
 
 /* FAQ */
 
 .faq{
   max-width:850px;
-  margin:auto
+  margin:auto;
 }
 
 .faq-item{
-  background:#fff;
+  background:var(--white);
   border:1px solid var(--border);
-  border-radius:12px;
+  border-radius:14px;
   margin-bottom:10px;
-  overflow:hidden
+  overflow:hidden;
 }
 
-.faq-q{
-  padding:18px;
+.faq-question{
+  width:100%;
+  background:none;
+  border:0;
+  color:var(--text);
   display:flex;
   justify-content:space-between;
+  padding:20px;
+  text-align:left;
   font-weight:800;
-  cursor:pointer
 }
 
-.faq-a{
+.faq-answer{
   display:none;
-  padding:0 18px 18px;
-  color:var(--muted)
+  padding:0 20px 20px;
+  color:var(--muted);
 }
 
-.faq-item.open .faq-a{
-  display:block
+.faq-item.open .faq-answer{
+  display:block;
+}
+
+/* TRACK */
+
+.track{
+  max-width:750px;
+  margin:auto;
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:25px;
+  box-shadow:var(--shadow);
+}
+
+.track-form{
+  display:flex;
+  gap:10px;
+}
+
+.track-form input{
+  flex:1;
+  padding:14px;
+  border:1px solid var(--border);
+  border-radius:10px;
+  outline:none;
+  background:var(--white);
+  color:var(--text);
 }
 
 /* FOOTER */
 
 footer{
-  background:var(--dark);
-  color:#fff;
-  padding:60px 0 30px
+  background:#0b1220;
+  color:white;
+  margin-top:50px;
 }
 
-.footer-grid{
+.footer-inner{
+  max-width:1200px;
+  margin:auto;
+  padding:55px 20px;
   display:grid;
-  grid-template-columns:2fr 1fr 1fr 1fr;
-  gap:30px
+  grid-template-columns:2fr 1fr 1fr;
+  gap:40px;
 }
 
-.footer-grid h3{
-  margin-bottom:15px
+.footer-col h3{
+  margin-bottom:15px;
 }
 
-.footer-grid p,
-.footer-grid a{
-  color:#aab6c6;
+.footer-col p,
+.footer-col a{
   display:block;
-  margin-bottom:8px;
-  font-size:14px
+  color:#98a2b3;
+  margin:8px 0;
 }
 
 .copyright{
-  border-top:1px solid #243247;
-  margin-top:40px;
-  padding-top:20px;
-  color:#8391a5;
-  font-size:13px
+  border-top:1px solid #273244;
+  padding:20px;
+  text-align:center;
+  color:#98a2b3;
 }
 
 /* MODALS */
@@ -573,273 +635,347 @@ footer{
 .modal{
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,.65);
-  z-index:3000;
+  background:rgba(0,0,0,.68);
+  z-index:2000;
   display:none;
   align-items:center;
   justify-content:center;
-  padding:20px
+  padding:20px;
 }
 
-.modal.active{
-  display:flex
+.modal.show{
+  display:flex;
 }
 
 .modal-box{
-  background:#fff;
-  border-radius:20px;
   width:min(850px,100%);
   max-height:90vh;
   overflow:auto;
-  position:relative
+  background:var(--white);
+  color:var(--text);
+  border-radius:22px;
+  position:relative;
 }
 
-.modal-close{
-  position:absolute;
-  right:15px;
-  top:15px;
-  width:40px;
-  height:40px;
-  border:0;
-  border-radius:50%;
-  background:#fff;
-  box-shadow:0 3px 15px rgba(0,0,0,.15);
-  z-index:2;
-  font-size:20px
-}
-
-.modal-content{
-  padding:28px
-}
-
-.modal-image{
-  width:100%;
-  height:300px;
-  object-fit:cover;
-  border-radius:15px;
-  margin-bottom:20px
-}
-
-.rooms{
-  display:grid;
-  gap:12px;
-  margin-top:18px
-}
-
-.room{
-  border:1px solid var(--border);
-  padding:16px;
-  border-radius:12px;
+.modal-header{
+  padding:22px;
+  border-bottom:1px solid var(--border);
   display:flex;
   justify-content:space-between;
   align-items:center;
-  gap:15px
 }
 
-.room h4{
-  margin-bottom:5px
+.close{
+  width:40px;
+  height:40px;
+  border:0;
+  border-radius:10px;
+  background:var(--light);
+  color:var(--text);
+  font-size:22px;
 }
 
-.room p{
-  color:var(--muted);
-  font-size:13px
+.modal-content{
+  padding:22px;
+}
+
+.detail-image{
+  width:100%;
+  height:320px;
+  object-fit:cover;
+  border-radius:16px;
+  margin-bottom:20px;
+}
+
+.detail-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+}
+
+.detail-list{
+  margin:15px 0;
+  padding-left:20px;
+}
+
+.detail-list li{
+  margin:7px 0;
 }
 
 .form-grid{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:12px
+  gap:14px;
 }
 
-.form-field{
-  margin-bottom:12px
+.form-group{
+  margin-bottom:14px;
 }
 
-.form-field.full{
-  grid-column:1/-1
+.form-group.full{
+  grid-column:1/-1;
 }
 
-.form-field label{
+.form-group label{
   display:block;
-  font-weight:700;
   font-size:13px;
-  margin-bottom:5px
+  font-weight:800;
+  margin-bottom:6px;
 }
 
-.form-field input,
-.form-field textarea,
-.form-field select{
+.form-group input,
+.form-group textarea,
+.form-group select{
   width:100%;
-  padding:12px;
+  padding:13px;
   border:1px solid var(--border);
-  border-radius:9px;
-  outline:0
+  border-radius:10px;
+  background:var(--white);
+  color:var(--text);
+  outline:none;
 }
 
-.form-field textarea{
+.form-group textarea{
   min-height:100px;
-  resize:vertical
-}
-
-.summary{
-  background:#f8fafc;
-  border-radius:12px;
-  padding:16px;
-  margin-bottom:18px
-}
-
-.summary-row{
-  display:flex;
-  justify-content:space-between;
-  margin-bottom:7px
-}
-
-.summary-total{
-  border-top:1px solid var(--border);
-  padding-top:10px;
-  margin-top:10px;
-  font-size:20px;
-  font-weight:900
+  resize:vertical;
 }
 
 /* TOAST */
 
-.toast{
+.toast-container{
   position:fixed;
   right:20px;
   bottom:20px;
-  background:#101828;
-  color:#fff;
-  padding:14px 18px;
-  border-radius:10px;
   z-index:5000;
-  transform:translateY(120px);
-  opacity:0;
-  transition:.3s
-}
-
-.toast.show{
-  transform:translateY(0);
-  opacity:1
-}
-
-/* TRACK */
-
-.track{
-  max-width:700px;
-  margin:auto;
-  background:#fff;
-  border:1px solid var(--border);
-  border-radius:18px;
-  padding:25px
-}
-
-.track-form{
   display:flex;
-  gap:10px
+  flex-direction:column;
+  gap:10px;
 }
 
-.track-form input{
-  flex:1;
+.toast{
+  min-width:280px;
+  max-width:380px;
+  padding:15px 18px;
+  background:#101828;
+  color:white;
+  border-radius:12px;
+  box-shadow:var(--shadow);
+  animation:toastIn .25s ease;
+}
+
+.toast.success{
+  border-left:5px solid var(--success);
+}
+
+.toast.error{
+  border-left:5px solid var(--danger);
+}
+
+@keyframes toastIn{
+  from{
+    transform:translateX(50px);
+    opacity:0;
+  }
+  to{
+    transform:translateX(0);
+    opacity:1;
+  }
+}
+
+/* MOBILE */
+
+.mobile-menu{
+  display:none;
+  background:var(--white);
+  border-top:1px solid var(--border);
+  padding:15px 20px;
+}
+
+.mobile-menu.show{
+  display:block;
+}
+
+.mobile-menu button{
+  width:100%;
   padding:13px;
-  border:1px solid var(--border);
-  border-radius:9px
+  background:none;
+  border:0;
+  color:var(--text);
+  text-align:left;
+  font-weight:700;
+  border-bottom:1px solid var(--border);
 }
 
-.status{
-  display:inline-block;
-  padding:6px 10px;
-  border-radius:20px;
-  font-size:12px;
-  font-weight:800;
-  background:#fff4d6;
-  color:#8a5a00
+.mobile-bottom{
+  display:none;
 }
 
-/* RESPONSIVE */
+@media(max-width:900px){
 
-@media(max-width:1000px){
-
-  .search-grid{
-    grid-template-columns:1fr 1fr
+  .search-box{
+    grid-template-columns:1fr 1fr;
   }
 
-  .search-btn{
-    min-height:50px
+  .search-field{
+    border-right:0;
   }
 
   .destinations{
-    grid-template-columns:repeat(2,1fr)
+    grid-template-columns:repeat(2,1fr);
   }
 
-  .hotels{
-    grid-template-columns:repeat(2,1fr)
+  .hotel-grid{
+    grid-template-columns:repeat(2,1fr);
   }
 
-  .filter-grid{
-    grid-template-columns:repeat(2,1fr)
+  .filters{
+    grid-template-columns:repeat(2,1fr);
   }
 
-  .features{
-    grid-template-columns:repeat(2,1fr)
+  .campaigns{
+    grid-template-columns:1fr;
   }
 
-  .footer-grid{
-    grid-template-columns:1fr 1fr
+  .why{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .footer-inner{
+    grid-template-columns:1fr 1fr;
   }
 }
 
-@media(max-width:700px){
+@media(max-width:650px){
 
-  .navlinks{
-    display:none
+  header{
+    position:sticky;
   }
 
-  .mobile-menu{
-    display:block
+  .navbar{
+    min-height:64px;
+  }
+
+  .logo{
+    font-size:16px;
+  }
+
+  .logo-icon{
+    width:36px;
+    height:36px;
+  }
+
+  .menu-btn{
+    display:grid;
   }
 
   .hero{
-    min-height:680px
+    padding:60px 16px 90px;
   }
 
-  .search-grid{
-    grid-template-columns:1fr
+  .hero h1{
+    font-size:38px;
+  }
+
+  .hero p{
+    font-size:16px;
+  }
+
+  .search-box{
+    grid-template-columns:1fr;
+    padding:10px;
+  }
+
+  .search-field{
+    border-bottom:1px solid #e4e7ec;
+  }
+
+  .search-btn{
+    width:100%;
+    min-height:52px;
+  }
+
+  .container{
+    padding:45px 15px;
+  }
+
+  .section-title{
+    display:block;
+  }
+
+  .section-title h2{
+    font-size:25px;
+    margin-bottom:5px;
   }
 
   .destinations,
-  .hotels,
-  .campaigns,
-  .features{
-    grid-template-columns:1fr
+  .hotel-grid,
+  .why{
+    grid-template-columns:1fr;
   }
 
-  .filter-grid{
-    grid-template-columns:1fr
+  .destination{
+    height:190px;
   }
 
-  .section-head{
-    display:block
+  .filters{
+    grid-template-columns:1fr;
   }
 
-  .form-grid{
-    grid-template-columns:1fr
-  }
-
-  .form-field.full{
-    grid-column:auto
+  .hotel-image{
+    height:230px;
   }
 
   .track-form{
-    flex-direction:column
+    flex-direction:column;
   }
 
-  .footer-grid{
-    grid-template-columns:1fr
+  .form-grid{
+    grid-template-columns:1fr;
   }
 
-  .hotel-bottom{
-    align-items:center
+  .form-group.full{
+    grid-column:auto;
+  }
+
+  .detail-grid{
+    grid-template-columns:1fr;
+  }
+
+  .footer-inner{
+    grid-template-columns:1fr;
+  }
+
+  .nav-actions .icon-btn:not(.menu-btn){
+    display:none;
+  }
+
+  .mobile-bottom{
+    position:fixed;
+    bottom:0;
+    left:0;
+    right:0;
+    z-index:1500;
+    height:65px;
+    background:var(--white);
+    border-top:1px solid var(--border);
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+  }
+
+  .mobile-bottom button{
+    border:0;
+    background:none;
+    color:var(--text);
+    font-size:11px;
+  }
+
+  .mobile-bottom span{
+    display:block;
+    font-size:20px;
+  }
+
+  body{
+    padding-bottom:65px;
   }
 }
 </style>
@@ -848,44 +984,44 @@ footer{
 <body>
 
 <header>
-  <div class="container nav">
+  <div class="navbar">
 
-    <a class="logo" href="#anasayfa">
-      Yılmaz Çalışkan <span>Turizm</span>
+    <a href="#" class="logo" onclick="scrollTopPage();return false;">
+      <span class="logo-icon">✈️</span>
+      <span>Yılmaz Çalışkan Turizm</span>
     </a>
 
-    <nav class="navlinks">
-      <a href="#oteller">Oteller</a>
-      <a href="#kampanyalar">Kampanyalar</a>
-      <a href="#destinasyonlar">Destinasyonlar</a>
-      <a href="#takip">Rezervasyon Takip</a>
-      <a href="#iletisim">İletişim</a>
-    </nav>
-
     <div class="nav-actions">
-      <button
-        class="icon-btn"
-        onclick="showFavorites()"
-        title="Favoriler">
+      <button class="icon-btn" onclick="toggleTheme()" title="Tema">
+        🌙
+      </button>
+
+      <button class="icon-btn" onclick="showFavorites()" title="Favoriler">
         ❤️
       </button>
 
-      <button
-        class="icon-btn mobile-menu"
-        onclick="toggleMobileMenu()">
+      <button class="icon-btn menu-btn" onclick="toggleMenu()" title="Menü">
         ☰
       </button>
     </div>
 
   </div>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <button onclick="scrollToSection('hotels');toggleMenu()">🏨 Oteller</button>
+    <button onclick="scrollToSection('campaigns');toggleMenu()">🎁 Kampanyalar</button>
+    <button onclick="scrollToSection('tracking');toggleMenu()">📋 Rezervasyon Takip</button>
+    <button onclick="scrollToSection('faq');toggleMenu()">❓ SSS</button>
+    <button onclick="scrollToSection('contact');toggleMenu()">📞 İletişim</button>
+  </div>
 </header>
 
 
-<main>
+<!-- HERO -->
 
-<section class="hero" id="anasayfa">
+<section class="hero">
 
-  <div class="container hero-content">
+  <div class="hero-inner">
 
     <h1>Hayalindeki tatili keşfet.</h1>
 
@@ -896,53 +1032,48 @@ footer{
 
     <div class="search-box">
 
-      <div class="search-grid">
-
-        <div class="field">
-          <label>NEREYE?</label>
-          <input
-            id="heroDestination"
-            placeholder="Antalya, Bodrum..."
-          >
-        </div>
-
-        <div class="field">
-          <label>GİRİŞ</label>
-          <input
-            id="heroCheckin"
-            type="date"
-          >
-        </div>
-
-        <div class="field">
-          <label>ÇIKIŞ</label>
-          <input
-            id="heroCheckout"
-            type="date"
-          >
-        </div>
-
-        <div class="field">
-          <label>MİSAFİR</label>
-          <select id="heroGuests">
-            <option value="1">1 kişi</option>
-            <option value="2" selected>2 kişi</option>
-            <option value="3">3 kişi</option>
-            <option value="4">4 kişi</option>
-            <option value="5">5 kişi</option>
-            <option value="6">6 kişi</option>
-            <option value="7">7 kişi</option>
-            <option value="8">8 kişi</option>
-          </select>
-        </div>
-
-        <button
-          class="search-btn"
-          onclick="searchHotels()">
-          🔎 Ara
-        </button>
-
+      <div class="search-field">
+        <label>NEREYE?</label>
+        <select id="searchDestination">
+          <option value="">Her yer</option>
+          <option value="Antalya">Antalya</option>
+          <option value="Bodrum">Bodrum</option>
+          <option value="Çeşme">Çeşme</option>
+          <option value="Kapadokya">Kapadokya</option>
+          <option value="İstanbul">İstanbul</option>
+          <option value="Ankara">Ankara</option>
+        </select>
       </div>
+
+      <div class="search-field">
+        <label>GİRİŞ</label>
+        <input type="date" id="checkin">
+      </div>
+
+      <div class="search-field">
+        <label>ÇIKIŞ</label>
+        <input type="date" id="checkout">
+      </div>
+
+      <div class="search-field">
+        <label>MİSAFİR</label>
+        <select id="searchGuests">
+          <option value="1">1 kişi</option>
+          <option value="2">2 kişi</option>
+          <option value="3">3 kişi</option>
+          <option value="4">4 kişi</option>
+          <option value="5">5 kişi</option>
+          <option value="6">6 kişi</option>
+          <option value="7">7 kişi</option>
+          <option value="8">8 kişi</option>
+          <option value="9">9 kişi</option>
+          <option value="10">10 kişi</option>
+        </select>
+      </div>
+
+      <button class="search-btn" onclick="performSearch()">
+        🔎 Ara
+      </button>
 
     </div>
 
@@ -953,74 +1084,43 @@ footer{
 
 <!-- DESTINATIONS -->
 
-<section id="destinasyonlar">
+<section class="container">
 
-  <div class="container">
+  <div class="section-title">
+    <div>
+      <h2>Popüler Destinasyonlar</h2>
+      <p>Türkiye'nin sevilen tatil noktalarını keşfet.</p>
+    </div>
+  </div>
 
-    <div class="section-head">
-      <div>
-        <h2>Popüler Destinasyonlar</h2>
-        <p>Türkiye'nin sevilen tatil noktalarını keşfet.</p>
+  <div class="destinations">
+
+    <div class="destination" onclick="chooseDestination('Antalya')">
+      <img src="https://images.unsplash.com/photo-1609844757827-38c2a9a1a0e6?auto=format&fit=crop&w=900&q=80">
+      <div class="destination-overlay">
+        <h3>Antalya</h3>
       </div>
     </div>
 
-    <div class="destinations">
-
-      <div
-        class="destination"
-        onclick="destinationSearch('Antalya')">
-
-        <img
-          src="https://images.unsplash.com/photo-1604999333679-b86d54738315?auto=format&fit=crop&w=1000&q=80">
-
-        <div class="destination-overlay">
-          <h3>Antalya</h3>
-        </div>
-
+    <div class="destination" onclick="chooseDestination('Bodrum')">
+      <img src="https://images.unsplash.com/photo-1602002418082-a4443e081dd1?auto=format&fit=crop&w=900&q=80">
+      <div class="destination-overlay">
+        <h3>Bodrum</h3>
       </div>
+    </div>
 
-
-      <div
-        class="destination"
-        onclick="destinationSearch('Bodrum')">
-
-        <img
-          src="https://images.unsplash.com/photo-1602002418082-a4443e081dd1?auto=format&fit=crop&w=1000&q=80">
-
-        <div class="destination-overlay">
-          <h3>Bodrum</h3>
-        </div>
-
+    <div class="destination" onclick="chooseDestination('Çeşme')">
+      <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&q=80">
+      <div class="destination-overlay">
+        <h3>Çeşme</h3>
       </div>
+    </div>
 
-
-      <div
-        class="destination"
-        onclick="destinationSearch('Çeşme')">
-
-        <img
-          src="https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=1000&q=80">
-
-        <div class="destination-overlay">
-          <h3>Çeşme</h3>
-        </div>
-
+    <div class="destination" onclick="chooseDestination('Kapadokya')">
+      <img src="https://images.unsplash.com/photo-1528181304800-259b08848526?auto=format&fit=crop&w=900&q=80">
+      <div class="destination-overlay">
+        <h3>Kapadokya</h3>
       </div>
-
-
-      <div
-        class="destination"
-        onclick="destinationSearch('Kapadokya')">
-
-        <img
-          src="https://images.unsplash.com/photo-1528181304800-259b08848526?auto=format&fit=crop&w=1000&q=80">
-
-        <div class="destination-overlay">
-          <h3>Kapadokya</h3>
-        </div>
-
-      </div>
-
     </div>
 
   </div>
@@ -1030,417 +1130,79 @@ footer{
 
 <!-- HOTELS -->
 
-<section id="oteller">
-
-<div class="container">
-
-<div class="section-head">
-
-<div>
-<h2>Otel ve Konaklama</h2>
-<p id="resultText">Sizin için seçtiğimiz konaklama seçenekleri</p>
-</div>
-
-</div>
-
-
-<div class="filters">
-
-<div class="filter-grid">
-
-<div class="filter-box">
-
-<label>DESTİNASYON</label>
-
-<input
-id="filterLocation"
-placeholder="Şehir"
->
-
-</div>
-
-
-<div class="filter-box">
-
-<label>MAKSİMUM FİYAT</label>
-
-<input
-id="filterPrice"
-type="number"
-placeholder="₺"
->
-
-</div>
-
-
-<div class="filter-box">
-
-<label>YILDIZ</label>
-
-<select id="filterStars">
-
-<option value="">Tümü</option>
-<option value="3">3 yıldız</option>
-<option value="4">4 yıldız</option>
-<option value="5">5 yıldız</option>
-
-</select>
-
-</div>
-
-
-<div class="filter-box">
-
-<label>SIRALAMA</label>
-
-<select id="sortHotels">
-
-<option value="recommended">
-Önerilen
-</option>
-
-<option value="priceLow">
-Fiyat düşükten
-</option>
-
-<option value="priceHigh">
-Fiyat yüksekten
-</option>
-
-<option value="rating">
-Puan
-</option>
-
-</select>
-
-</div>
-
-
-<div class="filter-box">
-
-<label>OTEL TİPİ</label>
-
-<select id="filterType">
-
-<option value="">Tümü</option>
-<option value="Resort">Resort</option>
-<option value="Boutique">Butik</option>
-<option value="City">Şehir</option>
-<option value="Villa">Villa</option>
-
-</select>
-
-</div>
-
-</div>
-
-
-<div class="checks">
-
-<label>
-<input
-type="checkbox"
-id="checkPool">
-🏊 Havuz
-</label>
-
-<label>
-<input
-type="checkbox"
-id="checkSpa">
-🧖 Spa
-</label>
-
-<label>
-<input
-type="checkbox"
-id="checkBreakfast">
-🍳 Kahvaltı
-</label>
-
-<label>
-<input
-type="checkbox"
-id="checkParking">
-🚗 Otopark
-</label>
-
-<label>
-<input
-type="checkbox"
-id="checkWifi">
-📶 Wi-Fi
-</label>
-
-<button
-class="secondary"
-onclick="applyFilters()">
-Filtrele
-</button>
-
-</div>
-
-</div>
-
-
-<div
-class="hotels"
-id="hotelGrid">
-</div>
-
-</div>
-
-</section>
-
-
-<!-- CAMPAIGNS -->
-
-<section id="kampanyalar">
-
-<div class="container">
-
-<div class="section-head">
-
-<div>
-<h2>Kampanyalar</h2>
-<p>Avantajlı tatil seçeneklerini keşfedin.</p>
-</div>
-
-</div>
-
-
-<div class="campaigns">
-
-<div class="campaign">
-
-<div>🌴</div>
-
-<h3>Yaz Tatili</h3>
-
-<p>
-Antalya ve Ege kıyılarında tatil seçeneklerini keşfedin.
-</p>
-
-</div>
-
-
-<div class="campaign">
-
-<div>🏖️</div>
-
-<h3>Ege Kaçamağı</h3>
-
-<p>
-Bodrum ve Çeşme'de unutulmaz bir tatil planlayın.
-</p>
-
-</div>
-
-
-<div class="campaign">
-
-<div>🎈</div>
-
-<h3>Kapadokya</h3>
-
-<p>
-Peribacaları arasında farklı bir konaklama deneyimi.
-</p>
-
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-
-<!-- FEATURES -->
-
-<section>
-
-<div class="container">
-
-<div class="section-head">
-
-<div>
-<h2>Neden Yılmaz Çalışkan Turizm?</h2>
-</div>
-
-</div>
-
-
-<div class="features">
-
-<div class="feature-box">
-<div class="emoji">🔎</div>
-<h3>Kolay Arama</h3>
-<p>
-Destinasyon, tarih, fiyat ve özelliklere göre
-konaklama seçeneklerini filtreleyin.
-</p>
-</div>
-
-
-<div class="feature-box">
-<div class="emoji">🏨</div>
-<h3>Konaklama Seçenekleri</h3>
-<p>
-Farklı şehirlerde otel, resort, butik ve villa seçenekleri.
-</p>
-</div>
-
-
-<div class="feature-box">
-<div class="emoji">📋</div>
-<h3>Rezervasyon Takibi</h3>
-<p>
-Rezervasyon numaranızla talebinizin durumunu takip edin.
-</p>
-</div>
-
-
-<div class="feature-box">
-<div class="emoji">📱</div>
-<h3>Kolay İletişim</h3>
-<p>
-Rezervasyon ve bilgi talepleriniz için bizimle iletişime geçin.
-</p>
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-
-<!-- TRACKING -->
-
-<section id="takip">
-
-<div class="container">
-
-<div class="section-head">
-
-<div>
-<h2>Rezervasyon Takip</h2>
-<p>
-Rezervasyon numaranızla durumunuzu kontrol edin.
-</p>
-</div>
-
-</div>
-
-
-<div class="track">
-
-<div class="track-form">
-
-<input
-id="trackNumber"
-placeholder="YC-20261002-1234"
->
-
-<button
-class="primary"
-onclick="trackBooking()">
-Rezervasyonu Bul
-</button>
-
-</div>
-
-
-<div id="trackResult"></div>
-
-</div>
-
-</div>
-
-</section>
-
-
-<!-- FAQ -->
-
-<section>
-
-<div class="container">
-
-<div class="section-head">
-
-<div>
-<h2>Sık Sorulan Sorular</h2>
-</div>
-
-</div>
-
-
-<div class="faq">
-
-
-<div class="faq-item">
-
-<div
-class="faq-q"
-onclick="toggleFaq(this)">
-Rezervasyon nasıl yapılır?
-<span>+</span>
-</div>
-
-<div class="faq-a">
-Otel seçerek giriş ve çıkış tarihlerinizi,
-misafir bilgilerinizi girip rezervasyon talebi
-oluşturabilirsiniz.
-</div>
-
-</div>
-
-
-<div class="faq-item">
-
-<div
-class="faq-q"
-onclick="toggleFaq(this)">
-Rezervasyonum ne zaman onaylanır?
-<span>+</span>
-</div>
-
-<div class="faq-a">
-Rezervasyon talebiniz yönetim paneline ulaşır.
-Kontrol sonrasında durumunuz güncellenir.
-</div>
-
-</div>
-
-
-<div class="faq-item">
-
-<div
-class="faq-q"
-onclick="toggleFaq(this)">
-Rezervasyonumu nasıl takip ederim?
-<span>+</span>
-</div>
-
-<div class="faq-a">
-Rezervasyon numaranızı Rezervasyon Takip
-alanına girerek durumunuzu kontrol edebilirsiniz.
-</div>
-
-</div>
-
-
-<div class="faq-item">
-
-<div
-class="faq-q"
-onclick="toggleFaq(this)">
-İptal işlemi nasıl yapılır?
-<span>+</span>
-</div>
-
-<div class="faq-a">
-İptal koşulları seçilen tesis ve rezervasyon
-şartlarına göre değişebilir. Destek ekibimizle
-iletişime geçe
+<section class="container" id="hotels">
+
+  <div class="section-title">
+
+    <div>
+      <h2>Otel ve Konaklama</h2>
+      <p>Sizin için seçtiğimiz konaklama seçenekleri</p>
+    </div>
+
+    <strong id="hotelCount"></strong>
+
+  </div>
+
+
+  <div class="filter-panel">
+
+    <div class="filters">
+
+      <div class="filter">
+        <label>DESTİNASYON</label>
+        <select id="filterDestination" onchange="applyFilters()">
+          <option value="">Şehir</option>
+          <option value="Antalya">Antalya</option>
+          <option value="Bodrum">Bodrum</option>
+          <option value="Çeşme">Çeşme</option>
+          <option value="Kapadokya">Kapadokya</option>
+          <option value="İstanbul">İstanbul</option>
+        </select>
+      </div>
+
+      <div class="filter">
+        <label>MAKSİMUM FİYAT</label>
+        <input id="filterPrice" type="number" min="0" placeholder="₺ Örn. 5000" oninput="applyFilters()">
+      </div>
+
+      <div class="filter">
+        <label>YILDIZ</label>
+        <select id="filterRating" onchange="applyFilters()">
+          <option value="0">Tümü</option>
+          <option value="5">5 yıldız</option>
+          <option value="4">4+ yıldız</option>
+          <option value="3">3+ yıldız</option>
+        </select>
+      </div>
+
+      <div class="filter">
+        <label>SIRALAMA</label>
+        <select id="sortFilter" onchange="applyFilters()">
+          <option value="recommended">Önerilen</option>
+          <option value="priceLow">En ucuz</option>
+          <option value="priceHigh">En pahalı</option>
+          <option value="rating">En yüksek puan</option>
+        </select>
+      </div>
+
+    </div>
+
+    <div class="amenities">
+
+      <button class="amenity" data-amenity="Havuz" onclick="toggleAmenity(this)">
+        🏊 Havuz
+      </button>
+
+      <button class="amenity" data-amenity="Spa" onclick="toggleAmenity(this)">
+        🧖 Spa
+      </button>
+
+      <button class="amenity" data-amenity="Kahvaltı" onclick="toggleAmenity(this)">
+        🍳 Kahvaltı
+      </button>
+
+      <button class="amenity" data-amenity="Otopark" onclick="toggleAmenity(this)">
+        🚗 Otopark
+      </button>
+
+      <butto
