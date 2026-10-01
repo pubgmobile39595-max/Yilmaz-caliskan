@@ -58,14 +58,14 @@
 
       <label>
 
-        Kullanıcı adı
+        E-posta adresi
 
         <input
           id="adminUsername"
-          type="text"
+          type="email"
           autocomplete="username"
           required
-          placeholder="Yönetici kullanıcı adı">
+          placeholder="Yönetici e-posta adresi">
 
       </label>
 
@@ -98,7 +98,7 @@
         class="login-error"
         hidden>
 
-        Kullanıcı adı veya şifre hatalı.
+        E-posta veya şifre hatalı.
 
       </div>
 
@@ -255,7 +255,7 @@
             Yönetici
           </strong>
 
-          <small>
+          <small id="adminEmailDisplay">
             Yılmaz Çalışkan Turizm
           </small>
 
@@ -522,7 +522,7 @@
 
 
           <span class="status-badge">
-            Demo katalog
+            Aktif katalog
           </span>
 
         </div>
@@ -588,19 +588,19 @@
           <div>
 
             <strong>
-              Veri sistemi
+              Rezervasyon sistemi
             </strong>
 
             <p>
-              Şu anda demo olarak
-              localStorage kullanılmaktadır.
+              Rezervasyon kayıtları Supabase
+              veritabanına kaydedilmektedir.
             </p>
 
           </div>
 
 
-          <span class="status-badge warning">
-            Demo
+          <span class="status-badge">
+            Supabase aktif
           </span>
 
         </div>
@@ -611,19 +611,19 @@
           <div>
 
             <strong>
-              Güvenlik
+              Yönetici güvenliği
             </strong>
 
             <p>
-              Gerçek yayında Firebase/Supabase
-              veya özel backend kullanılmalıdır.
+              Yönetici girişi Supabase
+              Authentication ile korunmaktadır.
             </p>
 
           </div>
 
 
-          <span class="status-badge warning">
-            Geliştirilecek
+          <span class="status-badge">
+            Aktif
           </span>
 
         </div>
@@ -632,12 +632,13 @@
         <div class="danger-zone">
 
           <h3>
-            Demo verilerini temizle
+            Yerel demo verilerini temizle
           </h3>
 
           <p>
-            Bu işlem rezervasyon ve mesajları
-            bu cihazdan siler.
+            Bu işlem yalnızca bu cihazdaki
+            yerel demo verilerini siler.
+            Supabase rezervasyonlarını silmez.
           </p>
 
 
@@ -645,7 +646,7 @@
             id="clearData"
             class="danger-button">
 
-            Tüm Demo Verilerini Sil
+            Yerel Demo Verilerini Sil
 
           </button>
 
@@ -662,7 +663,18 @@
 
 
 
-<script src="admin.js"></script>
+<!-- =====================================================
+     SUPABASE
+===================================================== -->
+
+<script
+  src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+</script>
+
+<script
+  src="admin.js">
+</script>
+
 
 </body>
 
