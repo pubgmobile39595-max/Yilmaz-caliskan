@@ -1,203 +1,141 @@
 /* =====================================================
    YILMAZ ÇALIŞKAN TURİZM
-   ADMIN PANEL JAVASCRIPT
+   GERÇEK SUPABASE ADMIN PANELİ
 ===================================================== */
 
 "use strict";
 
 
 /* =====================================================
-   AYARLAR
+   SUPABASE AYARLARI
 ===================================================== */
 
-/*
-  ⚠️ BU GİRİŞ SİSTEMİ DEMO AMAÇLIDIR.
+const SUPABASE_URL =
+  "https://vbaglsnkmahnwdazqcue.supabase.co";
 
-  GitHub Pages üzerinde JavaScript'e yazılan
-  kullanıcı adı/şifre gerçek anlamda gizli değildir.
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_jFv8ZP75Ais3eSjx_bsjzg_pAcgoJ0G";
 
-  Gerçek yayında güvenli backend/auth sistemi
-  kurulacaktır.
-*/
 
-const ADMIN_USERNAME = "admin";
-const ADMIN_PASSWORD = "YC2026";
+let supabaseClient = null;
 
+
+/* =====================================================
+   BAŞLANGIÇ
+===================================================== */
+
+if (
+  typeof window.supabase !== "undefined" &&
+  SUPABASE_PUBLISHABLE_KEY !==
+    "BURAYA_PUBLISHABLE_KEYINI_YAPISTIR"
+) {
+
+  supabaseClient =
+    window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_PUBLISHABLE_KEY
+    );
+
+}
+
+
+/* =====================================================
+   STORAGE
+===================================================== */
 
 const STORAGE = {
-  bookings: "yc_bookings",
-  messages: "yc_messages",
-  favorites: "yc_favorites"
+
+  messages:
+    "yc_messages",
+
+  favorites:
+    "yc_favorites"
+
 };
 
 
 /* =====================================================
-   YARDIMCI FONKSİYONLAR
-===================================================== */
-
-function getElement(id) {
-  return document.getElementById(id);
-}
-
-
-function getStorageArray(key) {
-  try {
-
-    const value = localStorage.getItem(key);
-
-    if (!value) {
-      return [];
-    }
-
-    const parsed = JSON.parse(value);
-
-    return Array.isArray(parsed) ? parsed : [];
-
-  } catch (error) {
-
-    console.error("LocalStorage okuma hatası:", error);
-
-    return [];
-  }
-}
-
-
-function setStorageArray(key, value) {
-
-  try {
-
-    localStorage.setItem(
-      key,
-      JSON.stringify(value)
-    );
-
-  } catch (error) {
-
-    console.error(
-      "LocalStorage yazma hatası:",
-      error
-    );
-
-  }
-
-}
-
-
-function escapeHTML(value) {
-
-  if (value === null || value === undefined) {
-    return "";
-  }
-
-  return String(value)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-}
-
-
-function formatDate(dateValue) {
-
-  if (!dateValue) {
-    return "-";
-  }
-
-  const date = new Date(dateValue);
-
-  if (Number.isNaN(date.getTime())) {
-    return escapeHTML(dateValue);
-  }
-
-  return new Intl.DateTimeFormat(
-    "tr-TR",
-    {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric"
-    }
-  ).format(date);
-}
-
-
-function formatDateTime(dateValue) {
-
-  if (!dateValue) {
-    return "-";
-  }
-
-  const date = new Date(dateValue);
-
-  if (Number.isNaN(date.getTime())) {
-    return escapeHTML(dateValue);
-  }
-
-  return new Intl.DateTimeFormat(
-    "tr-TR",
-    {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit"
-    }
-  ).format(date);
-}
-
-
-function showAlert(message) {
-  window.alert(message);
-}
-
-
-/* =====================================================
-   OTEL VERİLERİ
+   FALLBACK OTELLER
 ===================================================== */
 
 const fallbackHotels = [
 
   {
     id: "ant-001",
-    name: "Antalya Premium Resort",
-    location: "Antalya",
-    price: 4500,
+
+    name:
+      "Antalya Premium Resort",
+
+    location:
+      "Antalya",
+
+    price:
+      4500,
+
     image:
       "https://images.unsplash.com/photo-1564501049412-61c2a3083791?auto=format&fit=crop&w=900&q=80"
   },
 
   {
     id: "bod-001",
-    name: "Bodrum Luxury Resort",
-    location: "Bodrum",
-    price: 5200,
+
+    name:
+      "Bodrum Luxury Resort",
+
+    location:
+      "Bodrum",
+
+    price:
+      5200,
+
     image:
       "https://images.unsplash.com/photo-1540541338287-41700207dee6?auto=format&fit=crop&w=900&q=80"
   },
 
   {
     id: "ces-001",
-    name: "Çeşme Marina Hotel",
-    location: "Çeşme",
-    price: 3900,
+
+    name:
+      "Çeşme Marina Hotel",
+
+    location:
+      "Çeşme",
+
+    price:
+      3900,
+
     image:
       "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=900&q=80"
   },
 
   {
     id: "kap-001",
-    name: "Kapadokya Cave Hotel",
-    location: "Kapadokya",
-    price: 3400,
+
+    name:
+      "Kapadokya Cave Hotel",
+
+    location:
+      "Kapadokya",
+
+    price:
+      3400,
+
     image:
       "https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&w=900&q=80"
   },
 
   {
     id: "ist-001",
-    name: "İstanbul Bosphorus Hotel",
-    location: "İstanbul",
-    price: 4800,
+
+    name:
+      "İstanbul Bosphorus Hotel",
+
+    location:
+      "İstanbul",
+
+    price:
+      4800,
+
     image:
       "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=900&q=80"
   }
@@ -206,15 +144,199 @@ const fallbackHotels = [
 
 
 /* =====================================================
-   OTELLERİ AL
+   YARDIMCILAR
+===================================================== */
+
+function getElement(id) {
+
+  return document.getElementById(id);
+
+}
+
+
+function escapeHTML(value) {
+
+  if (
+    value === null ||
+    value === undefined
+  ) {
+
+    return "";
+
+  }
+
+
+  return String(value)
+
+    .replaceAll(
+      "&",
+      "&amp;"
+    )
+
+    .replaceAll(
+      "<",
+      "&lt;"
+    )
+
+    .replaceAll(
+      ">",
+      "&gt;"
+    )
+
+    .replaceAll(
+      '"',
+      "&quot;"
+    )
+
+    .replaceAll(
+      "'",
+      "&#039;"
+    );
+
+}
+
+
+function formatDate(value) {
+
+  if (!value) {
+
+    return "-";
+
+  }
+
+
+  const date =
+    new Date(value);
+
+
+  if (
+    Number.isNaN(
+      date.getTime()
+    )
+  ) {
+
+    return escapeHTML(value);
+
+  }
+
+
+  return new Intl.DateTimeFormat(
+    "tr-TR",
+    {
+      day:
+        "2-digit",
+
+      month:
+        "2-digit",
+
+      year:
+        "numeric"
+    }
+  ).format(date);
+
+}
+
+
+function formatDateTime(value) {
+
+  if (!value) {
+
+    return "-";
+
+  }
+
+
+  const date =
+    new Date(value);
+
+
+  if (
+    Number.isNaN(
+      date.getTime()
+    )
+  ) {
+
+    return escapeHTML(value);
+
+  }
+
+
+  return new Intl.DateTimeFormat(
+    "tr-TR",
+    {
+      day:
+        "2-digit",
+
+      month:
+        "2-digit",
+
+      year:
+        "numeric",
+
+      hour:
+        "2-digit",
+
+      minute:
+        "2-digit"
+    }
+  ).format(date);
+
+}
+
+
+function showAlert(message) {
+
+  window.alert(message);
+
+}
+
+
+/* =====================================================
+   LOCAL STORAGE
+===================================================== */
+
+function getStorageArray(key) {
+
+  try {
+
+    const value =
+      localStorage.getItem(key);
+
+
+    if (!value) {
+
+      return [];
+
+    }
+
+
+    const parsed =
+      JSON.parse(value);
+
+
+    return Array.isArray(parsed)
+      ? parsed
+      : [];
+
+  } catch (error) {
+
+    console.error(
+      "Storage okuma hatası:",
+      error
+    );
+
+    return [];
+
+  }
+
+}
+
+
+/* =====================================================
+   OTELLER
 ===================================================== */
 
 function getHotels() {
-
-  /*
-    Ana script.js içindeki global veri varsa
-    onu kullanmaya çalışıyoruz.
-  */
 
   try {
 
@@ -225,88 +347,256 @@ function getHotels() {
       )
     ) {
 
-      return window.YilmazCaliskanTurizm.hotels;
+      return (
+        window.YilmazCaliskanTurizm.hotels
+      );
 
     }
 
   } catch (error) {
 
     console.warn(
-      "Ana otel verisi okunamadı.",
+      "Ana oteller okunamadı.",
       error
     );
 
   }
 
+
   return fallbackHotels;
+
 }
 
 
 /* =====================================================
-   REZERVASYONLAR
+   SUPABASE KONTROL
 ===================================================== */
 
-function getBookings() {
-  return getStorageArray(
-    STORAGE.bookings
-  );
+function ensureSupabase() {
+
+  if (!supabaseClient) {
+
+    showAlert(
+      "Supabase bağlantısı hazır değil. Publishable key'i kontrol edin."
+    );
+
+    return false;
+
+  }
+
+
+  return true;
+
 }
 
 
 /* =====================================================
-   MESAJLAR
+   GERÇEK SUPABASE LOGIN
 ===================================================== */
 
-function getMessages() {
-  return getStorageArray(
-    STORAGE.messages
-  );
+async function loginAdmin(
+  email,
+  password
+) {
+
+  if (!ensureSupabase()) {
+
+    return false;
+
+  }
+
+
+  try {
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient.auth.signInWithPassword({
+
+        email:
+          email,
+
+        password:
+          password
+
+      });
+
+
+    if (error) {
+
+      console.error(
+        "Supabase login hatası:",
+        error
+      );
+
+      return false;
+
+    }
+
+
+    return Boolean(
+      data &&
+      data.session
+    );
+
+  } catch (error) {
+
+    console.error(
+      "Login exception:",
+      error
+    );
+
+    return false;
+
+  }
+
 }
 
 
 /* =====================================================
-   FAVORİLER
+   OTURUM KONTROL
 ===================================================== */
 
-function getFavorites() {
-  return getStorageArray(
-    STORAGE.favorites
-  );
+async function getCurrentSession() {
+
+  if (!ensureSupabase()) {
+
+    return null;
+
+  }
+
+
+  try {
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient.auth.getSession();
+
+
+    if (error) {
+
+      console.error(
+        "Session hatası:",
+        error
+      );
+
+      return null;
+
+    }
+
+
+    return data.session || null;
+
+  } catch (error) {
+
+    console.error(
+      "Session exception:",
+      error
+    );
+
+    return null;
+
+  }
+
 }
 
 
 /* =====================================================
-   LOGIN
+   LOGIN EKRANI
+===================================================== */
+
+function showLoginScreen() {
+
+  const loginScreen =
+    getElement(
+      "loginScreen"
+    );
+
+  const adminPanel =
+    getElement(
+      "adminPanel"
+    );
+
+
+  if (loginScreen) {
+
+    loginScreen.hidden =
+      false;
+
+  }
+
+
+  if (adminPanel) {
+
+    adminPanel.hidden =
+      true;
+
+  }
+
+}
+
+
+function showAdminPanel() {
+
+  const loginScreen =
+    getElement(
+      "loginScreen"
+    );
+
+  const adminPanel =
+    getElement(
+      "adminPanel"
+    );
+
+
+  if (loginScreen) {
+
+    loginScreen.hidden =
+      true;
+
+  }
+
+
+  if (adminPanel) {
+
+    adminPanel.hidden =
+      false;
+
+  }
+
+}
+
+
+/* =====================================================
+   LOGIN FORM
 ===================================================== */
 
 function setupLogin() {
 
-  const loginForm =
-    getElement("loginForm");
-
-  const loginScreen =
-    getElement("loginScreen");
-
-  const adminPanel =
-    getElement("adminPanel");
-
-  const loginError =
-    getElement("loginError");
+  const form =
+    getElement(
+      "loginForm"
+    );
 
 
-  if (!loginForm) {
+  if (!form) {
+
     return;
+
   }
 
 
-  loginForm.addEventListener(
+  form.addEventListener(
     "submit",
-    function (event) {
+    async function(event) {
 
       event.preventDefault();
 
 
-      const username =
+      const email =
         getElement(
           "adminUsername"
         )?.value
@@ -316,77 +606,133 @@ function setupLogin() {
       const password =
         getElement(
           "adminPassword"
-        )?.value
-          ?.trim();
+        )?.value;
 
 
-      if (
-        username === ADMIN_USERNAME &&
-        password === ADMIN_PASSWORD
-      ) {
-
-        sessionStorage.setItem(
-          "yc_admin_logged",
-          "true"
+      const errorBox =
+        getElement(
+          "loginError"
         );
 
 
-        loginScreen.hidden = true;
+      const button =
+        form.querySelector(
+          "button[type='submit']"
+        );
 
-        adminPanel.hidden = false;
+
+      if (!email || !password) {
+
+        if (errorBox) {
+
+          errorBox.textContent =
+            "E-posta ve şifre zorunludur.";
+
+          errorBox.hidden =
+            false;
+
+        }
+
+        return;
+
+      }
 
 
-        loadDashboard();
+      if (button) {
 
-        showSection("dashboard");
+        button.disabled =
+          true;
+
+        button.textContent =
+          "Giriş yapılıyor...";
+
+      }
+
+
+      if (errorBox) {
+
+        errorBox.hidden =
+          true;
+
+      }
+
+
+      const success =
+        await loginAdmin(
+          email,
+          password
+        );
+
+
+      if (success) {
+
+        showAdminPanel();
+
+
+        const emailDisplay =
+          getElement(
+            "adminEmailDisplay"
+          );
+
+
+        if (emailDisplay) {
+
+          emailDisplay.textContent =
+            email;
+
+        }
+
+
+        await loadDashboard();
+
+        showSection(
+          "dashboard"
+        );
 
       } else {
 
-        loginError.hidden = false;
+        if (errorBox) {
 
-        getElement(
-          "adminPassword"
-        ).value = "";
+          errorBox.textContent =
+            "E-posta veya şifre hatalı.";
+
+          errorBox.hidden =
+            false;
+
+        }
+
+
+        const passwordInput =
+          getElement(
+            "adminPassword"
+          );
+
+
+        if (passwordInput) {
+
+          passwordInput.value =
+            "";
+
+          passwordInput.focus();
+
+        }
+
+      }
+
+
+      if (button) {
+
+        button.disabled =
+          false;
+
+        button.textContent =
+          "Panele Giriş Yap";
 
       }
 
     }
   );
 
-}
-
-
-function checkLogin() {
-
-  const logged =
-    sessionStorage.getItem(
-      "yc_admin_logged"
-    );
-
-
-  if (logged === "true") {
-
-    getElement(
-      "loginScreen"
-    ).hidden = true;
-
-    getElement(
-      "adminPanel"
-    ).hidden = false;
-
-    return true;
-  }
-
-
-  getElement(
-    "loginScreen"
-  ).hidden = false;
-
-  getElement(
-    "adminPanel"
-  ).hidden = true;
-
-  return false;
 }
 
 
@@ -397,23 +743,46 @@ function checkLogin() {
 function setupLogout() {
 
   const button =
-    getElement("logoutButton");
+    getElement(
+      "logoutButton"
+    );
 
 
   if (!button) {
+
     return;
+
   }
 
 
   button.addEventListener(
     "click",
-    function () {
+    async function() {
 
-      sessionStorage.removeItem(
-        "yc_admin_logged"
-      );
+      if (
+        !supabaseClient
+      ) {
 
-      window.location.reload();
+        return;
+
+      }
+
+
+      try {
+
+        await supabaseClient.auth.signOut();
+
+      } catch (error) {
+
+        console.error(
+          "Logout hatası:",
+          error
+        );
+
+      }
+
+
+      showLoginScreen();
 
     }
   );
@@ -434,16 +803,15 @@ function setupNavigation() {
 
 
   navItems.forEach(
-    function (button) {
+    function(button) {
 
       button.addEventListener(
         "click",
-        function () {
+        function() {
 
-          const section =
-            button.dataset.section;
-
-          showSection(section);
+          showSection(
+            button.dataset.section
+          );
 
         }
       );
@@ -459,11 +827,11 @@ function setupNavigation() {
 
 
   sectionLinks.forEach(
-    function (button) {
+    function(button) {
 
       button.addEventListener(
         "click",
-        function () {
+        function() {
 
           showSection(
             button.dataset.sectionLink
@@ -478,7 +846,9 @@ function setupNavigation() {
 }
 
 
-function showSection(sectionName) {
+async function showSection(
+  sectionName
+) {
 
   const sections =
     document.querySelectorAll(
@@ -487,7 +857,7 @@ function showSection(sectionName) {
 
 
   sections.forEach(
-    function (section) {
+    function(section) {
 
       section.classList.remove(
         "active"
@@ -499,7 +869,8 @@ function showSection(sectionName) {
 
   const target =
     getElement(
-      sectionName + "Section"
+      sectionName +
+      "Section"
     );
 
 
@@ -519,7 +890,7 @@ function showSection(sectionName) {
 
 
   navItems.forEach(
-    function (button) {
+    function(button) {
 
       button.classList.toggle(
         "active",
@@ -552,7 +923,9 @@ function showSection(sectionName) {
 
 
   const title =
-    getElement("pageTitle");
+    getElement(
+      "pageTitle"
+    );
 
 
   if (title) {
@@ -565,25 +938,28 @@ function showSection(sectionName) {
 
 
   if (
-    sectionName === "dashboard"
+    sectionName ===
+    "dashboard"
   ) {
 
-    loadDashboard();
+    await loadDashboard();
 
   }
 
 
   if (
-    sectionName === "bookings"
+    sectionName ===
+    "bookings"
   ) {
 
-    renderBookings();
+    await renderBookings();
 
   }
 
 
   if (
-    sectionName === "messages"
+    sectionName ===
+    "messages"
   ) {
 
     renderMessages();
@@ -592,7 +968,8 @@ function showSection(sectionName) {
 
 
   if (
-    sectionName === "hotels"
+    sectionName ===
+    "hotels"
   ) {
 
     renderHotels();
@@ -603,68 +980,227 @@ function showSection(sectionName) {
 
 
 /* =====================================================
-   DASHBOARD
+   SUPABASE REZERVASYONLARI
 ===================================================== */
 
-function loadDashboard() {
+async function getBookings() {
 
-  const hotels =
-    getHotels();
+  if (!ensureSupabase()) {
 
-  const bookings =
-    getBookings();
+    return [];
 
-  const messages =
-    getMessages();
-
-  const favorites =
-    getFavorites();
-
-
-  const statHotels =
-    getElement("statHotels");
-
-  const statBookings =
-    getElement("statBookings");
-
-  const statMessages =
-    getElement("statMessages");
-
-  const statFavorites =
-    getElement("statFavorites");
-
-
-  if (statHotels) {
-    statHotels.textContent =
-      hotels.length;
-  }
-
-  if (statBookings) {
-    statBookings.textContent =
-      bookings.length;
-  }
-
-  if (statMessages) {
-    statMessages.textContent =
-      messages.length;
-  }
-
-  if (statFavorites) {
-    statFavorites.textContent =
-      favorites.length;
   }
 
 
-  renderDashboardBookings();
+  try {
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+
+        .from(
+          "bookings"
+        )
+
+        .select(
+          "*"
+        )
+
+        .order(
+          "created_at",
+          {
+            ascending:
+              false
+          }
+        );
+
+
+    if (error) {
+
+      console.error(
+        "Rezervasyon okuma hatası:",
+        error
+      );
+
+      showAlert(
+        "Rezervasyonlar alınamadı:\n" +
+        error.message
+      );
+
+      return [];
+
+    }
+
+
+    return Array.isArray(data)
+      ? data
+      : [];
+
+  } catch (error) {
+
+    console.error(
+      "Rezervasyon exception:",
+      error
+    );
+
+    return [];
+
+  }
 
 }
 
 
 /* =====================================================
-   DASHBOARD SON REZERVASYONLAR
+   REZERVASYON FORMAT DÖNÜŞÜMÜ
 ===================================================== */
 
-function renderDashboardBookings() {
+function normalizeBooking(
+  booking
+) {
+
+  return {
+
+    id:
+      booking.id,
+
+    bookingNumber:
+      booking.booking_number ||
+      "-",
+
+    name:
+      booking.customer_name ||
+      "-",
+
+    email:
+      booking.email ||
+      "-",
+
+    phone:
+      booking.phone ||
+      "-",
+
+    hotel:
+      booking.hotel_name ||
+      "-",
+
+    location:
+      booking.location ||
+      "-",
+
+    checkin:
+      booking.checkin,
+
+    checkout:
+      booking.checkout,
+
+    guests:
+      booking.guests ||
+      0,
+
+    status:
+      booking.status ||
+      "Yeni",
+
+    createdAt:
+      booking.created_at
+
+  };
+
+}
+
+
+/* =====================================================
+   DASHBOARD
+===================================================== */
+
+async function loadDashboard() {
+
+  const hotels =
+    getHotels();
+
+  const bookings =
+    await getBookings();
+
+  const messages =
+    getStorageArray(
+      STORAGE.messages
+    );
+
+  const favorites =
+    getStorageArray(
+      STORAGE.favorites
+    );
+
+
+  const statHotels =
+    getElement(
+      "statHotels"
+    );
+
+  const statBookings =
+    getElement(
+      "statBookings"
+    );
+
+  const statMessages =
+    getElement(
+      "statMessages"
+    );
+
+  const statFavorites =
+    getElement(
+      "statFavorites"
+    );
+
+
+  if (statHotels) {
+
+    statHotels.textContent =
+      hotels.length;
+
+  }
+
+
+  if (statBookings) {
+
+    statBookings.textContent =
+      bookings.length;
+
+  }
+
+
+  if (statMessages) {
+
+    statMessages.textContent =
+      messages.length;
+
+  }
+
+
+  if (statFavorites) {
+
+    statFavorites.textContent =
+      favorites.length;
+
+  }
+
+
+  renderDashboardBookings(
+    bookings
+  );
+
+}
+
+
+/* =====================================================
+   DASHBOARD REZERVASYONLARI
+===================================================== */
+
+function renderDashboardBookings(
+  rawBookings
+) {
 
   const container =
     getElement(
@@ -673,27 +1209,21 @@ function renderDashboardBookings() {
 
 
   if (!container) {
+
     return;
+
   }
 
 
   const bookings =
-    getBookings()
-      .sort(
-        function (a, b) {
-
-          return (
-            new Date(
-              b.createdAt || 0
-            ) -
-            new Date(
-              a.createdAt || 0
-            )
-          );
-
-        }
+    rawBookings
+      .slice(
+        0,
+        5
       )
-      .slice(0, 5);
+      .map(
+        normalizeBooking
+      );
 
 
   if (!bookings.length) {
@@ -723,7 +1253,7 @@ function renderDashboardBookings() {
    TÜM REZERVASYONLAR
 ===================================================== */
 
-function renderBookings() {
+async function renderBookings() {
 
   const container =
     getElement(
@@ -732,26 +1262,26 @@ function renderBookings() {
 
 
   if (!container) {
+
     return;
+
   }
 
 
+  container.innerHTML =
+    loadingState(
+      "Rezervasyonlar yükleniyor..."
+    );
+
+
+  const rawBookings =
+    await getBookings();
+
+
   const bookings =
-    getBookings()
-      .sort(
-        function (a, b) {
-
-          return (
-            new Date(
-              b.createdAt || 0
-            ) -
-            new Date(
-              a.createdAt || 0
-            )
-          );
-
-        }
-      );
+    rawBookings.map(
+      normalizeBooking
+    );
 
 
   if (!bookings.length) {
@@ -809,64 +1339,29 @@ function createBookingsTable(
 
           <th>Durum</th>
 
-          ${compact ? "" : "<th>İşlem</th>"}
+          ${
+            compact
+              ? ""
+              : "<th>İşlem</th>"
+          }
 
         </tr>
 
       </thead>
 
       <tbody>
+
   `;
 
 
   bookings.forEach(
-    function (booking) {
-
-      const bookingNumber =
-        booking.bookingNumber ||
-        "-";
-
-
-      const customer =
-        booking.name ||
-        "İsimsiz";
-
-
-      const phone =
-        booking.phone ||
-        "-";
-
-
-      const hotel =
-        booking.hotel ||
-        "-";
-
-
-      const location =
-        booking.location ||
-        "";
-
-
-      const checkin =
-        formatDate(
-          booking.checkin
-        );
-
-
-      const checkout =
-        formatDate(
-          booking.checkout
-        );
-
-
-      const guests =
-        booking.guests ||
-        "0";
-
+    function(booking) {
 
       const status =
-        booking.status ||
-        "Yeni";
+        String(
+          booking.status ||
+          "Yeni"
+        );
 
 
       let statusClass =
@@ -895,6 +1390,17 @@ function createBookingsTable(
       }
 
 
+      if (
+        status.toLowerCase() ===
+        "iptal"
+      ) {
+
+        statusClass =
+          "danger";
+
+      }
+
+
       html += `
 
         <tr>
@@ -902,15 +1408,19 @@ function createBookingsTable(
           <td>
 
             <span class="table-primary">
+
               ${escapeHTML(
-                bookingNumber
+                booking.bookingNumber
               )}
+
             </span>
 
             <span class="table-secondary">
+
               ${formatDateTime(
                 booking.createdAt
               )}
+
             </span>
 
           </td>
@@ -919,15 +1429,19 @@ function createBookingsTable(
           <td>
 
             <span class="table-primary">
+
               ${escapeHTML(
-                customer
+                booking.name
               )}
+
             </span>
 
             <span class="table-secondary">
+
               ${escapeHTML(
-                phone
+                booking.phone
               )}
+
             </span>
 
           </td>
@@ -936,15 +1450,19 @@ function createBookingsTable(
           <td>
 
             <span class="table-primary">
+
               ${escapeHTML(
-                hotel
+                booking.hotel
               )}
+
             </span>
 
             <span class="table-secondary">
+
               ${escapeHTML(
-                location
+                booking.location
               )}
+
             </span>
 
           </td>
@@ -953,24 +1471,36 @@ function createBookingsTable(
           <td>
 
             <span class="table-primary">
+
               ${escapeHTML(
-                checkin
+                formatDate(
+                  booking.checkin
+                )
               )}
+
             </span>
 
             <span class="table-secondary">
-              → ${escapeHTML(
-                checkout
+
+              →
+
+              ${escapeHTML(
+                formatDate(
+                  booking.checkout
+                )
               )}
+
             </span>
 
           </td>
 
 
           <td>
+
             ${escapeHTML(
-              guests
+              booking.guests
             )}
+
           </td>
 
 
@@ -1003,7 +1533,7 @@ function createBookingsTable(
                 class="action-button"
                 data-booking-action="view"
                 data-booking-id="${escapeHTML(
-                  bookingNumber
+                  booking.bookingNumber
                 )}">
 
                 Görüntüle
@@ -1012,367 +1542,14 @@ function createBookingsTable(
 
 
               ${
-                booking.phone
+                booking.phone &&
+                booking.phone !== "-"
                   ? `
+
                     <button
                       class="action-button whatsapp"
                       data-booking-action="whatsapp"
                       data-phone="${escapeHTML(
                         booking.phone
                       )}"
-                      data-name="${escapeHTML(
-                        booking.name || ""
-                      )}">
-
-                      WhatsApp
-
-                    </button>
-                  `
-                  : ""
-              }
-
-
-              <button
-                class="action-button"
-                data-booking-action="delete"
-                data-booking-id="${escapeHTML(
-                  bookingNumber
-                )}">
-
-                Sil
-
-              </button>
-
-            </div>
-
-          </td>
-
-        `;
-
-      }
-
-
-      html += `
-
-        </tr>
-
-      `;
-
-    }
-  );
-
-
-  html += `
-
-      </tbody>
-
-    </table>
-
-  `;
-
-
-  return html;
-}
-
-
-/* =====================================================
-   REZERVASYON İŞLEMLERİ
-===================================================== */
-
-function setupBookingActions() {
-
-  const buttons =
-    document.querySelectorAll(
-      "[data-booking-action]"
-    );
-
-
-  buttons.forEach(
-    function (button) {
-
-      button.addEventListener(
-        "click",
-        function () {
-
-          const action =
-            button.dataset.bookingAction;
-
-
-          if (action === "view") {
-
-            viewBooking(
-              button.dataset.bookingId
-            );
-
-          }
-
-
-          if (action === "delete") {
-
-            deleteBooking(
-              button.dataset.bookingId
-            );
-
-          }
-
-
-          if (action === "whatsapp") {
-
-            openWhatsApp(
-              button.dataset.phone,
-              button.dataset.name
-            );
-
-          }
-
-        }
-      );
-
-    }
-  );
-
-}
-
-
-function viewBooking(
-  bookingNumber
-) {
-
-  const bookings =
-    getBookings();
-
-
-  const booking =
-    bookings.find(
-      function (item) {
-
-        return (
-          String(
-            item.bookingNumber
-          ) ===
-          String(
-            bookingNumber
-          )
-        );
-
-      }
-    );
-
-
-  if (!booking) {
-
-    showAlert(
-      "Rezervasyon bulunamadı."
-    );
-
-    return;
-  }
-
-
-  const text =
-
-`REZERVASYON DETAYI
-
-Rezervasyon No:
-${booking.bookingNumber || "-"}
-
-Müşteri:
-${booking.name || "-"}
-
-E-posta:
-${booking.email || "-"}
-
-Telefon:
-${booking.phone || "-"}
-
-Otel:
-${booking.hotel || "-"}
-
-Konum:
-${booking.location || "-"}
-
-Giriş:
-${formatDate(booking.checkin)}
-
-Çıkış:
-${formatDate(booking.checkout)}
-
-Kişi:
-${booking.guests || "-"}
-
-Durum:
-${booking.status || "Yeni"}
-
-Talep zamanı:
-${formatDateTime(booking.createdAt)}
-`;
-
-
-  showAlert(text);
-
-}
-
-
-function deleteBooking(
-  bookingNumber
-) {
-
-  const confirmed =
-    window.confirm(
-      "Bu rezervasyonu silmek istediğinizden emin misiniz?"
-    );
-
-
-  if (!confirmed) {
-    return;
-  }
-
-
-  const bookings =
-    getBookings();
-
-
-  const filtered =
-    bookings.filter(
-      function (item) {
-
-        return String(
-          item.bookingNumber
-        ) !==
-        String(
-          bookingNumber
-        );
-
-      }
-    );
-
-
-  setStorageArray(
-    STORAGE.bookings,
-    filtered
-  );
-
-
-  renderBookings();
-
-  loadDashboard();
-
-  showAlert(
-    "Rezervasyon silindi."
-  );
-
-}
-
-
-/* =====================================================
-   WHATSAPP
-===================================================== */
-
-function openWhatsApp(
-  phone,
-  name
-) {
-
-  if (!phone) {
-
-    showAlert(
-      "Bu müşterinin telefon numarası bulunamadı."
-    );
-
-    return;
-
-  }
-
-
-  let cleaned =
-    String(phone)
-      .replace(/\D/g, "");
-
-
-  if (
-    cleaned.startsWith("0")
-  ) {
-
-    cleaned =
-      "90" +
-      cleaned.substring(1);
-
-  }
-
-
-  if (
-    !cleaned.startsWith("90") &&
-    cleaned.length === 10
-  ) {
-
-    cleaned =
-      "90" +
-      cleaned;
-
-  }
-
-
-  const message =
-    `Merhaba ${name || ""}, Yılmaz Çalışkan Turizm üzerinden yaptığınız rezervasyon talebiniz hakkında sizinle iletişime geçiyoruz.`;
-
-
-  const url =
-    "https://wa.me/" +
-    cleaned +
-    "?text=" +
-    encodeURIComponent(
-      message
-    );
-
-
-  window.open(
-    url,
-    "_blank",
-    "noopener,noreferrer"
-  );
-
-}
-
-
-/* =====================================================
-   MESAJLAR
-===================================================== */
-
-function renderMessages() {
-
-  const container =
-    getElement(
-      "messagesTable"
-    );
-
-
-  if (!container) {
-    return;
-  }
-
-
-  const messages =
-    getMessages()
-      .sort(
-        function (a, b) {
-
-          return (
-            new Date(
-              b.createdAt || 0
-            ) -
-            new Date(
-              a.createdAt || 0
-            )
-          );
-
-        }
-      );
-
-
-  if (!messages.length) {
-
-    container.innerHTML =
-      emptyState(
-        "📩",
-        "Henüz mesaj yok",
-        "İletişim formundan gelen mesajlar bura
+                      data-name
